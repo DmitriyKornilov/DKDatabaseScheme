@@ -14,6 +14,15 @@ Other icons:
 MIT License
 
 [Created by Tomas Hubelbauer](https://github.com/TomasHubelbauer/fatcow-icons)
+___
+Used extra font: JetBrains Mono Regular Nerd Font Complete v1.0.2
+
+SIL OFL 1.1 License
+
+[Nerd Fonts](https://www.nerdfonts.com/)
+
+[Project](https://github.com/ryanoasis/nerd-fonts)
+
 
  
 
