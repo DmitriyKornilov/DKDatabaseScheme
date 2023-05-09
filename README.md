@@ -2,13 +2,17 @@
  Database scheme editor for SQLite
 
 ![Screenshot](https://github.com/DmitriyKornilov/DKDatabaseScheme/blob/main/screenshot.png)
-
+___
 Application main icon:
-Flaticon License - Free for personal and commercial purpose with attribution
-[Created by prettycons - Flaticon](https://www.flaticon.com/free-icon/databases_977506)
 
+Flaticon License
+
+[Created by prettycons - Flaticon](https://www.flaticon.com/free-icon/databases_977506)
+___
 Other icons:
+
 MIT License
+
 [Created by Tomas Hubelbauer](https://github.com/TomasHubelbauer/fatcow-icons)
 
  
