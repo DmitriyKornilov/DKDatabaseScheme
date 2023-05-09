@@ -1,0 +1,146 @@
+object ValuesEditForm: TValuesEditForm
+  Left = 357
+  Height = 300
+  Top = 240
+  Width = 950
+  BorderStyle = bsSizeToolWin
+  ClientHeight = 300
+  ClientWidth = 950
+  OnCloseQuery = FormCloseQuery
+  OnShow = FormShow
+  Position = poScreenCenter
+  LCLVersion = '2.2.0.4'
+  object Panel1: TPanel
+    Left = 0
+    Height = 28
+    Top = 5
+    Width = 950
+    Align = alTop
+    AutoSize = True
+    BorderSpacing.Top = 5
+    BevelOuter = bvNone
+    ClientHeight = 28
+    ClientWidth = 950
+    TabOrder = 0
+    object AddButton: TRxSpeedButton
+      AnchorSideLeft.Control = Panel1
+      AnchorSideTop.Control = Panel1
+      Cursor = crHandPoint
+      Left = 12
+      Height = 28
+      Hint = 'Новая строка'
+      Top = 0
+      Width = 28
+      AutoSize = True
+      BorderSpacing.Left = 12
+      Flat = True
+      Images = MainForm.ImageList1
+      ImageIndex = 15
+      OnClick = AddButtonClick
+      ShowHint = True
+      ParentShowHint = False
+    end
+    object DelButton: TRxSpeedButton
+      AnchorSideLeft.Control = AddButton
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = Panel1
+      Cursor = crHandPoint
+      Left = 40
+      Height = 28
+      Hint = 'Удалить строку'
+      Top = 0
+      Width = 28
+      AutoSize = True
+      Flat = True
+      Images = MainForm.ImageList1
+      ImageIndex = 16
+      OnClick = DelButtonClick
+      ShowHint = True
+      ParentShowHint = False
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Height = 48
+    Top = 252
+    Width = 950
+    Align = alBottom
+    AutoSize = True
+    BevelOuter = bvNone
+    ClientHeight = 48
+    ClientWidth = 950
+    TabOrder = 1
+    object CancelButton: TSpeedButton
+      AnchorSideTop.Control = Panel2
+      AnchorSideRight.Control = Panel2
+      AnchorSideRight.Side = asrBottom
+      Left = 828
+      Height = 30
+      Top = 6
+      Width = 110
+      Anchors = [akTop, akRight]
+      AutoSize = True
+      BorderSpacing.Top = 6
+      BorderSpacing.Right = 12
+      BorderSpacing.Bottom = 12
+      Constraints.MinHeight = 26
+      Constraints.MinWidth = 110
+      Caption = 'Отмена'
+      Images = MainForm.ImageList1
+      ImageIndex = 14
+      Margin = 3
+      Spacing = 5
+      OnClick = CancelButtonClick
+    end
+    object SaveButton: TSpeedButton
+      AnchorSideTop.Control = CancelButton
+      AnchorSideTop.Side = asrCenter
+      AnchorSideRight.Control = CancelButton
+      Left = 712
+      Height = 30
+      Top = 6
+      Width = 110
+      Anchors = [akTop, akRight]
+      AutoSize = True
+      BorderSpacing.Right = 6
+      Constraints.MinHeight = 26
+      Constraints.MinWidth = 110
+      Caption = 'Сохранить'
+      Images = MainForm.ImageList1
+      ImageIndex = 13
+      Margin = 3
+      Spacing = 5
+      OnClick = SaveButtonClick
+    end
+    object Label1: TLabel
+      AnchorSideLeft.Control = Panel2
+      AnchorSideTop.Control = CancelButton
+      AnchorSideTop.Side = asrCenter
+      Left = 10
+      Height = 15
+      Top = 14
+      Width = 562
+      BorderSpacing.Left = 10
+      Caption = '*DATETIME указывать в формате ISO8601:    [YYYY]-[MM]-[DD]T[HH]:[NN]:[SS].[ZZZ]         (или ставить 0)'
+    end
+  end
+  object ValuesGrid: TStringGrid
+    Left = 12
+    Height = 213
+    Top = 33
+    Width = 926
+    Align = alClient
+    BorderSpacing.Left = 12
+    BorderSpacing.Right = 12
+    BorderSpacing.Bottom = 6
+    ColCount = 0
+    DefaultColWidth = 144
+    FixedCols = 0
+    FixedRows = 0
+    Flat = True
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goEditing, goRowSelect, goSmoothScroll]
+    RowCount = 0
+    TabOrder = 2
+    OnBeforeSelection = ValuesGridBeforeSelection
+  end
+end
