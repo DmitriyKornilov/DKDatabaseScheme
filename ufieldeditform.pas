@@ -120,8 +120,6 @@ begin
   SetDefaultValueControls;
 end;
 
-
-
 procedure TFieldEditForm.RefTableComboBoxChange(Sender: TObject);
 begin
   FieldListSet;
@@ -225,6 +223,8 @@ begin
   end;
 
   TmpField.FieldName:= S;
+  for i:=0 to High(TmpField.ReferenceFrom.FieldNames) do
+    TmpField.ReferenceFrom.FieldNames[i]:= S;
   TmpField.Description:= VFromStrings(FieldDescriptionMemo.Lines);
 
   TmpField.PrimaryKey:= PKCheckBox.Checked;
