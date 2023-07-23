@@ -120,8 +120,6 @@ begin
   SetDefaultValueControls;
 end;
 
-
-
 procedure TFieldEditForm.RefTableComboBoxChange(Sender: TObject);
 begin
   FieldListSet;
@@ -219,7 +217,7 @@ begin
           VAppend(TmpField.ExistingValues, EmptyStr);
     end;
   end
-  else if EditMode=2 {edit} then
+  else if (EditMode=2 {edit}) or (EditMode=3 {new from old}) then
   begin
     TmpField:= FieldCopy(BaseScheme.ActiveField);
   end;
@@ -265,7 +263,7 @@ begin
     ReferenceToClear(TmpField.ReferenceTo);
 
   try
-    if EditMode=1 {new} then
+    if (EditMode=1 {new}) or ((EditMode=3 {new from old})) then
       BaseScheme.FieldAdd(TmpField)
     else if EditMode=2 {edit} then
       BaseScheme.FieldSet(TmpField);
@@ -297,33 +295,7 @@ begin
   SetDefaultEmptyStr;
 
   Label3.Visible:= DefaultValueCheckBox.Checked and
-                   RadioButton2.Checked{DATETIME}
-
-  //if RadioButton1.Checked then //'INTEGER'
-  //begin
-  //  DefaultValueEdit.Visible:= True;
-  //  DateTimePicker1.Visible:= False;
-  //end
-  //else if RadioButton2.Checked then //'DATETIME'
-  //begin
-  //  DefaultValueEdit.Visible:= False;
-  //  DateTimePicker1.Visible:= True;
-  //end
-  //else if RadioButton3.Checked then //'TEXT'
-  //begin
-  //  DefaultValueEdit.Visible:= True;
-  //  DateTimePicker1.Visible:= False;
-  //end
-  //else if RadioButton4.Checked then //'REAL'
-  //begin
-  //  DefaultValueEdit.Visible:= True;
-  //  DateTimePicker1.Visible:= False;
-  //end
-  //else if RadioButton5.Checked then //'BLOB'
-  //begin
-  //  DefaultValueEdit.Visible:= True;
-  //  DateTimePicker1.Visible:= False;
-  //end;
+                   RadioButton2.Checked{DATETIME} ;
 end;
 
 procedure TFieldEditForm.BaseSchemeSet(const ABaseScheme: TBaseScheme;
@@ -380,7 +352,7 @@ begin
   TableListSet;
   ActionListSet;
 
-  if EditMode=2 {edit} then
+  if (EditMode=2 {edit}) or (EditMode=3 {new from old}) then
   begin
     FieldNameEdit.Text:= BaseScheme.ActiveField.FieldName;
     PKCheckBox.Checked:= BaseScheme.ActiveField.PrimaryKey;

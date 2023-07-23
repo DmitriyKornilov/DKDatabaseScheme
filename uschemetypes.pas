@@ -260,6 +260,8 @@ type
     procedure FieldAdd(const AField: TField);
     procedure FieldSet(const AField: TField);
     procedure FieldDel;
+    procedure FieldUnselect;
+    procedure FieldSelect(const AFieldIndex: Integer);
     procedure FieldOrIndexSelect(const ARow: Integer);
     procedure Unselect;
     procedure FieldMoveUp;
@@ -271,6 +273,8 @@ type
     procedure IndexAdd(const AIndex: TIndex);
     procedure IndexSet(const AIndex: TIndex);
     procedure IndexDel;
+    procedure IndexUnselect;
+    procedure IndexSelect(const AIndex: Integer);
 
     function IsFieldSelected: Boolean;
     function IsIndexSelected: Boolean;
@@ -1482,6 +1486,22 @@ begin
   Unselect;
 end;
 
+procedure TBaseScheme.FieldUnselect;
+begin
+  if not IsFieldSelected then Exit;
+  //убираем отрисовку выделения старого поля
+  FSheet.DrawFieldLine(FFieldSelectedIndex, False);
+  FFieldSelectedIndex:= -1;
+end;
+
+procedure TBaseScheme.FieldSelect(const AFieldIndex: Integer);
+begin
+  if IsFieldsEmpty or (AFieldIndex<0) then Exit;
+  FieldUnselect;
+  FFieldSelectedIndex:= AFieldIndex;
+  FSheet.DrawFieldLine(FFieldSelectedIndex, True);
+end;
+
 procedure TBaseScheme.FieldOrIndexSelect(const ARow: Integer);
 var
   Ind: Integer;
@@ -1491,19 +1511,8 @@ begin
     Ind:= FSheet.RowToFieldIndex(ARow);
     if Ind>=0 then //есть новое выделение поля
     begin
-      //убираем выделение индекса
-      if IsIndexSelected then
-      begin
-        FSheet.DrawIndexLine(FIndexSelectedIndex, False);
-        FIndexSelectedIndex:= -1;
-      end;
-      //убираем выделение старого поля
-      if IsFieldSelected then
-        FSheet.DrawFieldLine(FFieldSelectedIndex, False);
-      //выделяем новое поле
-      FFieldSelectedIndex:= Ind;
-      FSheet.DrawFieldLine(FFieldSelectedIndex, True);
-
+      IndexUnselect;
+      FieldSelect(Ind);
       Exit;
     end;
   end;
@@ -1513,22 +1522,10 @@ begin
     Ind:= FSheet.RowToIndexIndex(ARow);
     if Ind>=0 then //есть новое выделение индекса
     begin
-      //убираем выделение поля
-      if IsFieldSelected then
-      begin
-        FSheet.DrawFieldLine(FFieldSelectedIndex, False);
-        FFieldSelectedIndex:= -1;
-      end;
-      //убираем выделение старого индекса
-      if IsIndexSelected then
-        FSheet.DrawIndexLine(FIndexSelectedIndex, False);
-      //выделяем новый индекс
-      FIndexSelectedIndex:= Ind;
-      FSheet.DrawIndexLine(FIndexSelectedIndex, True);
-
+      FieldUnselect;
+      IndexSelect(Ind);
     end;
   end;
-
 end;
 
 procedure TBaseScheme.Unselect;
@@ -1551,7 +1548,8 @@ var
 begin
   Ind:= FFieldSelectedIndex + ADirection;
   FieldsSwap(FTables[FTableSelectedIndex].Fields, FFieldSelectedIndex, Ind);
-  FieldOrIndexSelect(Ind);
+  FieldSelect(Ind);
+  //FieldOrIndexSelect(Ind);
 end;
 
 procedure TBaseScheme.FieldMoveUp;
@@ -1612,6 +1610,21 @@ begin
   IndexesDel(FTables[FTableSelectedIndex].Indexes, FIndexSelectedIndex);
 
   Unselect;
+end;
+
+procedure TBaseScheme.IndexUnselect;
+begin
+  if not IsIndexSelected then Exit;
+  FSheet.DrawIndexLine(FIndexSelectedIndex, False);
+  FIndexSelectedIndex:= -1;
+end;
+
+procedure TBaseScheme.IndexSelect(const AIndex: Integer);
+begin
+  if IsIndexesEmpty or (AIndex<0) then Exit;
+  IndexUnselect;
+  FIndexSelectedIndex:= AIndex;
+  FSheet.DrawIndexLine(FIndexSelectedIndex, True);
 end;
 
 function TBaseScheme.IsFieldSelected: Boolean;
@@ -1723,7 +1736,7 @@ begin
 
   ColWidths:= VCreateInt([
     30,  // Левый отступ
-    150, // Наименование поля
+    200, // Наименование поля
     100,  // Тип поля
     30,  // PK
     30,  // Autoinc/Unique
@@ -1731,7 +1744,7 @@ begin
     120,  // Default value
     30,  // Стрелки ссылок
     200, // Cсылки
-    150  // Описание полей
+    400  // Описание полей
   ]);
 
   if AExistingValuesCount>0 then

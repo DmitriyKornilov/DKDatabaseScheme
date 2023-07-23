@@ -113,7 +113,7 @@ type
     procedure TableDelete;
     procedure TableSelect;
 
-    procedure FieldEdit(const AEditMode: Byte); //1-new, 2-edit
+    procedure FieldEdit(const AEditMode: Byte); //1-new, 2-edit, 3-new from old
     procedure FieldDelete;
 
     procedure IndexEdit(const AEditMode: Byte); //1-new, 2-edit
@@ -170,7 +170,10 @@ end;
 
 procedure TMainForm.FieldAddButtonClick(Sender: TObject);
 begin
-  FieldEdit(1);
+  if BaseScheme.IsFieldSelected then
+    FieldEdit(3)
+  else
+    FieldEdit(1);
 end;
 
 procedure TMainForm.BaseNewButtonClick(Sender: TObject);
