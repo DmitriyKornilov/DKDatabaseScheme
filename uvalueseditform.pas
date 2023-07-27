@@ -141,20 +141,23 @@ var
       for R:= 1 to ValuesGrid.RowCount-1 do
       begin
         RowNum:= IntToStr(R);
-        Value:= ValuesGrid.Cells[C,R];
-        if Value=EmptyStr then
-        begin
-          ShowInfo('Не указано значение №' + RowNum + ' для поля "' + FldName + '"!');
-          Exit;
-        end;
-        if not FieldValueCheck(Value, FldType) then
-        begin
-          ShowInfo('Некорректное значение №' +
-                    RowNum + ' для поля "' + FldName  + '" (' + FldType + ')!');
-          Exit;
-        end
-        else
+        if FldType='BLOB' then
+          Value:= EmptyStr
+        else begin
+          Value:= ValuesGrid.Cells[C,R];
+          if Value=EmptyStr then
+          begin
+            ShowInfo('Не указано значение №' + RowNum + ' для поля "' + FldName + '"!');
+            Exit;
+          end;
+          if not FieldValueCheck(Value, FldType) then
+          begin
+            ShowInfo('Некорректное значение №' +
+                      RowNum + ' для поля "' + FldName  + '" (' + FldType + ')!');
+            Exit;
+          end;
           ValuesGrid.Cells[C,R]:= Value;
+        end;
       end;
     end;
     Result:= True;

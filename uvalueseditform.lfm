@@ -9,7 +9,7 @@ object ValuesEditForm: TValuesEditForm
   OnCloseQuery = FormCloseQuery
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '2.2.0.4'
+  LCLVersion = '2.2.4.0'
   object Panel1: TPanel
     Left = 0
     Height = 28
@@ -122,6 +122,7 @@ object ValuesEditForm: TValuesEditForm
       Width = 562
       BorderSpacing.Left = 10
       Caption = '*DATETIME указывать в формате ISO8601:    [YYYY]-[MM]-[DD]T[HH]:[NN]:[SS].[ZZZ]         (или ставить 0)'
+      ParentColor = False
     end
   end
   object ValuesGrid: TStringGrid

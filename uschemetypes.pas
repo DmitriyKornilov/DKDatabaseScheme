@@ -519,8 +519,7 @@ begin
   end;
 end;
 
-function FieldValueCheck(var AFieldValue: String; const AFieldType: String
-  ): Boolean;
+function FieldValueCheck(var AFieldValue: String; const AFieldType: String): Boolean;
 var
   i: Int64;
   d: TDateTime;
@@ -531,14 +530,11 @@ begin
   'INTEGER' : Result:= TryStrToInt64(AFieldValue, i);
   'DATETIME': if AFieldValue<>'0' then
                   Result:= TryISO8601ToDate(AFieldValue, d);
-
-  //'TEXT'    : Result:= True;
   'REAL'    : Result:= TryStrToFloat(AFieldValue, f);
-  //'BLOB'    : ;
+  //'TEXT'  not need
+  //'BLOB'  not need
   end;
 end;
-
-
 
 function FieldValueToSQLString(const AFieldValue, AFieldType: String): String;
 begin
@@ -1291,23 +1287,34 @@ const
   procedure ExistingValues;
   var
     StrConst, Str, StrValues: String;
-    k,m: Integer;
+    k,m,n: Integer;
   begin
-    Str:= FTables[ATableIndex].Fields[0].FieldName;
-    for k:= 1 to High(FTables[ATableIndex].Fields) do
-      Str:= Str + ', ' + FTables[ATableIndex].Fields[k].FieldName;
+    n:= 0;
+    while n<= High(FTables[ATableIndex].Fields) do
+    begin
+      if FTables[ATableIndex].Fields[n].FieldType<>'BLOB' then
+        break;
+      n:= n + 1;
+    end;
+    if n>High(FTables[ATableIndex].Fields) then Exit;
+
+    Str:= FTables[ATableIndex].Fields[n].FieldName;
+    for k:= n+1 to High(FTables[ATableIndex].Fields) do
+      if FTables[ATableIndex].Fields[k].FieldType<>'BLOB' then
+        Str:= Str + ', ' + FTables[ATableIndex].Fields[k].FieldName;
 
     StrConst:= 'INSERT OR ' + INSERT_OR_STR + ' INTO ' +
                INTERV + FTables[ATableIndex].TableName +
                INTERV + '(' + Str + ')' +
                INTERV + 'VALUES' +
                INTERV + '(';
-    for m:= 0 to High(FTables[ATableIndex].Fields[0].ExistingValues) do
+    for m:= 0 to High(FTables[ATableIndex].Fields[n].ExistingValues) do
     begin
-      Str:= FTables[ATableIndex].Fields[0].ExistingValues[m];
-      StrValues:= FieldValueToSQLString(Str, FTables[ATableIndex].Fields[0].FieldType);
-      for k:= 1 to High(FTables[ATableIndex].Fields) do
+      Str:= FTables[ATableIndex].Fields[n].ExistingValues[m];
+      StrValues:= FieldValueToSQLString(Str, FTables[ATableIndex].Fields[n].FieldType);
+      for k:= n+1 to High(FTables[ATableIndex].Fields) do
       begin
+        if FTables[ATableIndex].Fields[k].FieldType='BLOB' then continue;
         Str:= FTables[ATableIndex].Fields[k].ExistingValues[m];
         StrValues:= StrValues + ', ' +
           FieldValueToSQLString(Str, FTables[ATableIndex].Fields[k].FieldType);
