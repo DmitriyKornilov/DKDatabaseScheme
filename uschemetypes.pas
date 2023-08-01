@@ -1313,6 +1313,7 @@ const
         Fld:= FTables[ATableIndex].Fields[n];
         StrValue:= Fld.ExistingValues[k];
         if SEmpty(StrValue) then continue;
+        StrValue:= FieldValueToSQLString(StrValue, Fld.FieldType);
         //список полей
         if SEmpty(StrFields) then
           StrFields:= Fld.FieldName
