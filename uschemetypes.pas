@@ -551,7 +551,7 @@ begin
                 Result:= QuotedStr(AFieldValue);
 
   'REAL'    : Result:= AFieldValue;
-  //'BLOB'    : ;
+  //'BLOB'  not need
   end;
 end;
 
@@ -1286,43 +1286,47 @@ const
 
   procedure ExistingValues;
   var
-    StrConst, Str, StrValues: String;
-    k,m,n: Integer;
+    StrValue, StrValues, StrFields, StrBegin, StrMiddle, StrEnd: String;
+    Fld: TField;
+    k, n : Integer;
   begin
-    n:= 0;
-    while n<= High(FTables[ATableIndex].Fields) do
-    begin
-      if FTables[ATableIndex].Fields[n].FieldType<>'BLOB' then
-        break;
-      n:= n + 1;
-    end;
-    if n>High(FTables[ATableIndex].Fields) then Exit;
+    if Length(FTables[ATableIndex].Fields)=0 then Exit;
 
-    Str:= FTables[ATableIndex].Fields[n].FieldName;
-    for k:= n+1 to High(FTables[ATableIndex].Fields) do
-      if FTables[ATableIndex].Fields[k].FieldType<>'BLOB' then
-        Str:= Str + ', ' + FTables[ATableIndex].Fields[k].FieldName;
-
-    StrConst:= 'INSERT OR ' + INSERT_OR_STR + ' INTO ' +
+    StrBegin:= 'INSERT OR ' + INSERT_OR_STR + ' INTO ' +
                INTERV + FTables[ATableIndex].TableName +
-               INTERV + '(' + Str + ')' +
-               INTERV + 'VALUES' +
                INTERV + '(';
-    for m:= 0 to High(FTables[ATableIndex].Fields[n].ExistingValues) do
-    begin
-      Str:= FTables[ATableIndex].Fields[n].ExistingValues[m];
-      StrValues:= FieldValueToSQLString(Str, FTables[ATableIndex].Fields[n].FieldType);
-      for k:= n+1 to High(FTables[ATableIndex].Fields) do
-      begin
-        if FTables[ATableIndex].Fields[k].FieldType='BLOB' then continue;
-        Str:= FTables[ATableIndex].Fields[k].ExistingValues[m];
-        StrValues:= StrValues + ', ' +
-          FieldValueToSQLString(Str, FTables[ATableIndex].Fields[k].FieldType);
-      end;
-      Str:= StrConst + StrValues + ');';
-      VAppend(Result, Str);
-    end;
+               // StrFields here
+    StrMiddle:= ')' +
+                INTERV + 'VALUES' +
+                INTERV + '(';
+               // StrValues here
+    StrEnd:= ');';
 
+    //пробегаем по всем строкам предзаписанных значений
+    for k:= 0 to High(FTables[ATableIndex].Fields[0].ExistingValues) do
+    begin
+      StrFields:= EmptyStr;
+      StrValues:= EmptyStr;
+      //проебегаем по всем полям
+      for n:= 0 to High(FTables[ATableIndex].Fields) do
+      begin
+        Fld:= FTables[ATableIndex].Fields[n];
+        StrValue:= Fld.ExistingValues[k];
+        if SEmpty(StrValue) then continue;
+        //список полей
+        if SEmpty(StrFields) then
+          StrFields:= Fld.FieldName
+        else
+          StrFields:= StrFields + ', ' + Fld.FieldName;
+        //список значений
+        if SEmpty(StrValues) then
+          StrValues:= StrValue
+        else
+          StrValues:= StrValues + ', ' + StrValue;
+      end;
+      //SQL строка для записи
+      VAppend(Result, StrBegin + StrFields + StrMiddle + StrValues + StrEnd);
+    end;
   end;
 
 

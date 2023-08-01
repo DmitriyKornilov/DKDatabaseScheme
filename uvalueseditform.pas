@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
-  Grids, StdCtrls, rxctrls, USchemeTypes, DK_Vector, DK_Dialogs, DateUtils;
+  Grids, StdCtrls, rxctrls, USchemeTypes, DK_Vector, DK_Dialogs, DateUtils,
+  DK_StrUtils;
 
 type
 
@@ -143,14 +144,16 @@ var
         RowNum:= IntToStr(R);
         if FldType='BLOB' then
           Value:= EmptyStr
-        else begin
+        else if Tbl.Fields[C-1].NotNull and
+                (FldType<>'TEXT')  then
+        begin
           Value:= ValuesGrid.Cells[C,R];
-          if Value=EmptyStr then
+          if (Value=EmptyStr) and SEmpty(Tbl.Fields[C-1].DefaultValue) then
           begin
             ShowInfo('Не указано значение №' + RowNum + ' для поля "' + FldName + '"!');
             Exit;
           end;
-          if not FieldValueCheck(Value, FldType) then
+          if SEmpty(Tbl.Fields[C-1].DefaultValue) and (not FieldValueCheck(Value, FldType)) then
           begin
             ShowInfo('Некорректное значение №' +
                       RowNum + ' для поля "' + FldName  + '" (' + FldType + ')!');
@@ -176,7 +179,6 @@ begin
     for j:= 1 to ValuesGrid.RowCount-1 do
       VAppend(Tbl.Fields[i-1].ExistingValues, ValuesGrid.Cells[i,j]);
   end;
-
 
   ModalResult:= mrOK;
   CanFormClose:= True;
