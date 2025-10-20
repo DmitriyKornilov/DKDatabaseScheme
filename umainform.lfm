@@ -7,15 +7,14 @@ object MainForm: TMainForm
   ClientHeight = 587
   ClientWidth = 988
   DesignTimePPI = 120
+  WindowState = wsMaximized
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
-  LCLVersion = '2.2.6.0'
-  WindowState = wsMaximized
   object ToolPanel: TPanel
     Left = 6
-    Height = 28
+    Height = 34
     Top = 6
     Width = 976
     Align = alTop
@@ -25,7 +24,7 @@ object MainForm: TMainForm
     BorderSpacing.Right = 6
     BorderSpacing.Bottom = 6
     BevelOuter = bvNone
-    ClientHeight = 28
+    ClientHeight = 34
     ClientWidth = 976
     TabOrder = 0
     object BaseOpenButton: TRxSpeedButton
@@ -33,37 +32,37 @@ object MainForm: TMainForm
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = ToolPanel
       Cursor = crHandPoint
-      Left = 34
-      Height = 28
+      Left = 40
+      Height = 34
       Hint = 'Открыть схему'
       Top = 0
-      Width = 28
+      Width = 34
       AutoSize = True
       Flat = True
       Images = ImageList1
       ImageIndex = 0
-      OnClick = BaseOpenButtonClick
       ShowHint = True
       ParentShowHint = False
+      OnClick = BaseOpenButtonClick
     end
     object BaseSaveButton: TRxSpeedButton
       AnchorSideLeft.Control = BaseOpenButton
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = ToolPanel
       Cursor = crHandPoint
-      Left = 62
-      Height = 28
+      Left = 74
+      Height = 34
       Hint = 'Сохранить схему'
       Top = 0
-      Width = 28
+      Width = 34
       AutoSize = True
       Enabled = False
       Flat = True
       Images = ImageList1
       ImageIndex = 1
-      OnClick = BaseSaveButtonClick
       ShowHint = True
       ParentShowHint = False
+      OnClick = BaseSaveButtonClick
     end
     object DividerBevel1: TDividerBevel
       AnchorSideLeft.Control = ExportSQLScriptButton
@@ -71,10 +70,10 @@ object MainForm: TMainForm
       AnchorSideTop.Control = ToolPanel
       AnchorSideBottom.Control = ToolPanel
       AnchorSideBottom.Side = asrBottom
-      Left = 194
-      Height = 28
+      Left = 231
+      Height = 34
       Top = 0
-      Width = 20
+      Width = 21
       Anchors = [akTop, akLeft, akBottom]
       Font.Style = [fsBold]
       Orientation = trVertical
@@ -85,56 +84,56 @@ object MainForm: TMainForm
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = ToolPanel
       Cursor = crHandPoint
-      Left = 214
-      Height = 28
+      Left = 252
+      Height = 34
       Hint = 'Новая таблица'
       Top = 0
-      Width = 28
+      Width = 34
       AutoSize = True
       Flat = True
       Images = ImageList1
       ImageIndex = 3
-      OnClick = TableAddButtonClick
       ShowHint = True
       ParentShowHint = False
+      OnClick = TableAddButtonClick
     end
     object TableEditButton: TRxSpeedButton
       AnchorSideLeft.Control = TableAddButton
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = ToolPanel
       Cursor = crHandPoint
-      Left = 242
-      Height = 28
+      Left = 286
+      Height = 34
       Hint = 'Редактировать таблицу'
       Top = 0
-      Width = 28
+      Width = 34
       AutoSize = True
       Enabled = False
       Flat = True
       Images = ImageList1
       ImageIndex = 4
-      OnClick = TableEditButtonClick
       ShowHint = True
       ParentShowHint = False
+      OnClick = TableEditButtonClick
     end
     object TableDeleteButton: TRxSpeedButton
       AnchorSideLeft.Control = TableEditButton
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = ToolPanel
       Cursor = crHandPoint
-      Left = 270
-      Height = 28
+      Left = 320
+      Height = 34
       Hint = 'Удалить таблицу'
       Top = 0
-      Width = 28
+      Width = 34
       AutoSize = True
       Enabled = False
       Flat = True
       Images = ImageList1
       ImageIndex = 5
-      OnClick = TableDeleteButtonClick
       ShowHint = True
       ParentShowHint = False
+      OnClick = TableDeleteButtonClick
     end
     object DividerBevel2: TDividerBevel
       AnchorSideLeft.Control = TableDeleteButton
@@ -142,10 +141,10 @@ object MainForm: TMainForm
       AnchorSideTop.Control = ToolPanel
       AnchorSideBottom.Control = ToolPanel
       AnchorSideBottom.Side = asrBottom
-      Left = 298
-      Height = 28
+      Left = 354
+      Height = 34
       Top = 0
-      Width = 20
+      Width = 21
       Anchors = [akTop, akLeft, akBottom]
       Font.Style = [fsBold]
       Orientation = trVertical
@@ -156,151 +155,151 @@ object MainForm: TMainForm
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = ToolPanel
       Cursor = crHandPoint
-      Left = 318
-      Height = 28
+      Left = 375
+      Height = 34
       Hint = 'Новое поле'
       Top = 0
-      Width = 28
+      Width = 34
       AutoSize = True
       Enabled = False
       Flat = True
       Images = ImageList1
       ImageIndex = 6
-      OnClick = FieldAddButtonClick
       ShowHint = True
       ParentShowHint = False
+      OnClick = FieldAddButtonClick
     end
     object FieldEditButton: TRxSpeedButton
       AnchorSideLeft.Control = FieldAddButton
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = ToolPanel
       Cursor = crHandPoint
-      Left = 346
-      Height = 28
+      Left = 409
+      Height = 34
       Hint = 'Редактировать поле'
       Top = 0
-      Width = 28
+      Width = 34
       AutoSize = True
       Enabled = False
       Flat = True
       Images = ImageList1
       ImageIndex = 7
-      OnClick = FieldEditButtonClick
       ShowHint = True
       ParentShowHint = False
+      OnClick = FieldEditButtonClick
     end
     object FieldDeleteButton: TRxSpeedButton
       AnchorSideLeft.Control = FieldEditButton
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = ToolPanel
       Cursor = crHandPoint
-      Left = 374
-      Height = 28
+      Left = 443
+      Height = 34
       Hint = 'Удалить поле'
       Top = 0
-      Width = 28
+      Width = 34
       AutoSize = True
       Enabled = False
       Flat = True
       Images = ImageList1
       ImageIndex = 8
-      OnClick = FieldDeleteButtonClick
       ShowHint = True
       ParentShowHint = False
+      OnClick = FieldDeleteButtonClick
     end
     object FieldDownButton: TRxSpeedButton
       AnchorSideLeft.Control = FieldDeleteButton
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = ToolPanel
       Cursor = crHandPoint
-      Left = 402
-      Height = 28
+      Left = 477
+      Height = 34
       Hint = 'Переместить поле вниз'
       Top = 0
-      Width = 28
+      Width = 34
       AutoSize = True
       Enabled = False
       Flat = True
       Images = ImageList1
       ImageIndex = 9
-      OnClick = FieldDownButtonClick
       ShowHint = True
       ParentShowHint = False
+      OnClick = FieldDownButtonClick
     end
     object FieldUpButton: TRxSpeedButton
       AnchorSideLeft.Control = FieldDownButton
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = ToolPanel
       Cursor = crHandPoint
-      Left = 430
-      Height = 28
+      Left = 511
+      Height = 34
       Hint = 'Переместить поле вверх'
       Top = 0
-      Width = 28
+      Width = 34
       AutoSize = True
       Enabled = False
       Flat = True
       Images = ImageList1
       ImageIndex = 10
-      OnClick = FieldUpButtonClick
       ShowHint = True
       ParentShowHint = False
+      OnClick = FieldUpButtonClick
     end
     object FieldValuesButton: TRxSpeedButton
       AnchorSideLeft.Control = FieldUpButton
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = ToolPanel
       Cursor = crHandPoint
-      Left = 458
-      Height = 28
+      Left = 545
+      Height = 34
       Hint = 'Существующие значения'
       Top = 0
-      Width = 28
+      Width = 34
       AutoSize = True
       Enabled = False
       Flat = True
       Images = ImageList1
       ImageIndex = 11
-      OnClick = FieldValuesButtonClick
       ShowHint = True
       ParentShowHint = False
+      OnClick = FieldValuesButtonClick
     end
     object BaseSaveAsButton: TRxSpeedButton
       AnchorSideLeft.Control = BaseSaveButton
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = ToolPanel
       Cursor = crHandPoint
-      Left = 90
-      Height = 28
+      Left = 108
+      Height = 34
       Hint = 'Сохранить схему как'
       Top = 0
-      Width = 28
+      Width = 34
       AutoSize = True
       Enabled = False
       Flat = True
       Images = ImageList1
       ImageIndex = 2
-      OnClick = BaseSaveAsButtonClick
       ShowHint = True
       ParentShowHint = False
+      OnClick = BaseSaveAsButtonClick
     end
     object BaseNewButton: TRxSpeedButton
       AnchorSideLeft.Control = ToolPanel
       AnchorSideTop.Control = ToolPanel
       Cursor = crHandPoint
       Left = 6
-      Height = 28
+      Height = 34
       Hint = 'Создать новую схему'
       Top = 0
-      Width = 28
+      Width = 34
       AutoSize = True
       BorderSpacing.Left = 6
       Flat = True
       Images = ImageList1
       ImageIndex = 12
-      OnClick = BaseNewButtonClick
       ShowHint = True
       ParentShowHint = False
+      OnClick = BaseNewButtonClick
     end
     object DividerBevel3: TDividerBevel
       AnchorSideLeft.Control = BaseSaveAsButton
@@ -308,10 +307,10 @@ object MainForm: TMainForm
       AnchorSideTop.Control = ToolPanel
       AnchorSideBottom.Control = ToolPanel
       AnchorSideBottom.Side = asrBottom
-      Left = 118
-      Height = 28
+      Left = 142
+      Height = 34
       Top = 0
-      Width = 20
+      Width = 21
       Anchors = [akTop, akLeft, akBottom]
       Font.Style = [fsBold]
       Orientation = trVertical
@@ -322,38 +321,38 @@ object MainForm: TMainForm
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = ToolPanel
       Cursor = crHandPoint
-      Left = 138
-      Height = 28
+      Left = 163
+      Height = 34
       Hint = 'Сохранить схему в файл электронной таблицы'
       Top = 0
-      Width = 28
+      Width = 34
       AutoSize = True
       Enabled = False
       Flat = True
       Images = ImageList1
       ImageIndex = 17
-      OnClick = ExportSpreadsheetButtonClick
       ShowHint = True
       ParentShowHint = False
+      OnClick = ExportSpreadsheetButtonClick
     end
     object ExportSQLScriptButton: TRxSpeedButton
       AnchorSideLeft.Control = ExportSpreadsheetButton
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = ToolPanel
       Cursor = crHandPoint
-      Left = 166
-      Height = 28
+      Left = 197
+      Height = 34
       Hint = 'Сохранить SQL скрипт'
       Top = 0
-      Width = 28
+      Width = 34
       AutoSize = True
       Enabled = False
       Flat = True
       Images = ImageList1
       ImageIndex = 18
-      OnClick = ExportSQLScriptButtonClick
       ShowHint = True
       ParentShowHint = False
+      OnClick = ExportSQLScriptButtonClick
     end
     object DividerBevel4: TDividerBevel
       AnchorSideLeft.Control = FieldValuesButton
@@ -361,10 +360,10 @@ object MainForm: TMainForm
       AnchorSideTop.Control = ToolPanel
       AnchorSideBottom.Control = ToolPanel
       AnchorSideBottom.Side = asrBottom
-      Left = 486
-      Height = 28
+      Left = 579
+      Height = 34
       Top = 0
-      Width = 20
+      Width = 21
       Anchors = [akTop, akLeft, akBottom]
       Font.Style = [fsBold]
       Orientation = trVertical
@@ -375,29 +374,29 @@ object MainForm: TMainForm
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = ToolPanel
       AnchorSideTop.Side = asrCenter
-      Left = 610
+      Left = 723
       Height = 24
-      Top = 2
-      Width = 112
+      Top = 5
+      Width = 109
       Caption = 'Все таблицы'
-      OnChange = CheckBox1Change
       TabOrder = 0
+      OnChange = CheckBox1Change
     end
     object CheckBox2: TCheckBox
       AnchorSideLeft.Control = CheckBox1
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = ToolPanel
       AnchorSideTop.Side = asrCenter
-      Left = 728
+      Left = 838
       Height = 24
-      Top = 2
-      Width = 53
+      Top = 5
+      Width = 50
       BorderSpacing.Left = 6
       Caption = 'DDL'
       Checked = True
-      OnChange = CheckBox2Change
       State = cbChecked
       TabOrder = 1
+      OnChange = CheckBox2Change
     end
     object DividerBevel5: TDividerBevel
       AnchorSideLeft.Control = IndexDeleteButton
@@ -405,10 +404,10 @@ object MainForm: TMainForm
       AnchorSideTop.Control = ToolPanel
       AnchorSideBottom.Control = ToolPanel
       AnchorSideBottom.Side = asrBottom
-      Left = 590
-      Height = 28
+      Left = 702
+      Height = 34
       Top = 0
-      Width = 20
+      Width = 21
       Anchors = [akTop, akLeft, akBottom]
       Font.Style = [fsBold]
       Orientation = trVertical
@@ -419,87 +418,86 @@ object MainForm: TMainForm
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = ToolPanel
       Cursor = crHandPoint
-      Left = 506
-      Height = 28
+      Left = 600
+      Height = 34
       Hint = 'Новый индекс'
       Top = 0
-      Width = 28
+      Width = 34
       AutoSize = True
       Enabled = False
       Flat = True
       Images = ImageList1
       ImageIndex = 21
-      OnClick = IndexAddButtonClick
       ShowHint = True
       ParentShowHint = False
+      OnClick = IndexAddButtonClick
     end
     object IndexEditButton: TRxSpeedButton
       AnchorSideLeft.Control = IndexAddButton
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = ToolPanel
       Cursor = crHandPoint
-      Left = 534
-      Height = 28
+      Left = 634
+      Height = 34
       Hint = 'Редактировать индекс'
       Top = 0
-      Width = 28
+      Width = 34
       AutoSize = True
       Enabled = False
       Flat = True
       Images = ImageList1
       ImageIndex = 23
-      OnClick = IndexEditButtonClick
       ShowHint = True
       ParentShowHint = False
+      OnClick = IndexEditButtonClick
     end
     object IndexDeleteButton: TRxSpeedButton
       AnchorSideLeft.Control = IndexEditButton
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = ToolPanel
       Cursor = crHandPoint
-      Left = 562
-      Height = 28
+      Left = 668
+      Height = 34
       Hint = 'Удалить индекс'
       Top = 0
-      Width = 28
+      Width = 34
       AutoSize = True
       Enabled = False
       Flat = True
       Images = ImageList1
       ImageIndex = 22
-      OnClick = IndexDeleteButtonClick
       ShowHint = True
       ParentShowHint = False
+      OnClick = IndexDeleteButtonClick
     end
   end
   object MainPanel: TPanel
-    Left = 225
-    Height = 512
-    Top = 40
-    Width = 757
+    Left = 362
+    Height = 506
+    Top = 46
+    Width = 620
     Align = alClient
     BorderSpacing.Right = 6
     BorderSpacing.Bottom = 6
     BevelOuter = bvNone
-    ClientHeight = 512
-    ClientWidth = 757
+    ClientHeight = 506
+    ClientWidth = 620
     TabOrder = 1
     inline SQLSynEdit: TSynEdit
       Left = 0
       Height = 255
-      Top = 257
-      Width = 757
+      Top = 251
+      Width = 620
       Align = alBottom
       Color = clWindow
       Font.Height = -16
-      Font.Name = 'Courier New'
       Font.Pitch = fpFixed
-      Font.Quality = fqNonAntialiased
+      Font.Quality = fqCleartype
       ParentColor = False
       ParentFont = False
       TabOrder = 0
       Gutter.Visible = False
-      Gutter.Width = 72
+      Gutter.Width = 84
       Gutter.MouseActions = <>
       RightGutter.Visible = False
       RightGutter.Width = 0
@@ -931,7 +929,7 @@ object MainForm: TMainForm
       MouseSelActions = <>
       VisibleSpecialChars = []
       ReadOnly = True
-      RightEdgeColor = clWindow
+      RightEdgeColor = clNone
       ScrollBars = ssAutoBoth
       SelectedColor.BackPriority = 50
       SelectedColor.ForePriority = 50
@@ -955,9 +953,11 @@ object MainForm: TMainForm
         object SynGutterMarks1: TSynGutterMarks
           Width = 30
           MouseActions = <>
+          MaxExtraMarksColums = 0
+          Options = [sgmoDeDuplicateMarksOnOverflow]
         end
         object SynGutterLineNumber1: TSynGutterLineNumber
-          Width = 21
+          Width = 33
           MouseActions = <>
           MarkupInfo.Background = clBtnFace
           MarkupInfo.Foreground = clNone
@@ -993,29 +993,29 @@ object MainForm: TMainForm
       Cursor = crVSplit
       Left = 0
       Height = 6
-      Top = 251
-      Width = 757
+      Top = 245
+      Width = 620
       Align = alBottom
       ResizeAnchor = akBottom
       ResizeStyle = rsLine
     end
     object Panel3: TPanel
       Left = 0
-      Height = 251
+      Height = 245
       Top = 0
-      Width = 757
+      Width = 620
       Align = alClient
       BevelOuter = bvNone
       BorderStyle = bsSingle
       Caption = 'Panel3'
-      ClientHeight = 247
-      ClientWidth = 753
+      ClientHeight = 241
+      ClientWidth = 616
       TabOrder = 2
       object SchemeGrid: TsWorksheetGrid
         Left = 0
-        Height = 223
+        Height = 217
         Top = 0
-        Width = 753
+        Width = 616
         AutoExpand = []
         DisplayFixedColRow = False
         FrozenCols = 0
@@ -1049,8 +1049,8 @@ object MainForm: TMainForm
       object ZoomPanel: TPanel
         Left = 0
         Height = 22
-        Top = 225
-        Width = 753
+        Top = 219
+        Width = 616
         Align = alBottom
         BevelOuter = bvNone
         ParentColor = False
@@ -1059,8 +1059,8 @@ object MainForm: TMainForm
       object Bevel1: TBevel
         Left = 0
         Height = 2
-        Top = 223
-        Width = 753
+        Top = 217
+        Width = 616
         Align = alBottom
         Shape = bsBottomLine
       end
@@ -1069,9 +1069,9 @@ object MainForm: TMainForm
   object Splitter2: TSplitter
     AnchorSideLeft.Control = LeftPanel
     AnchorSideLeft.Side = asrBottom
-    Left = 219
-    Height = 518
-    Top = 40
+    Left = 356
+    Height = 512
+    Top = 46
     Width = 6
     ResizeStyle = rsLine
   end
@@ -1095,9 +1095,9 @@ object MainForm: TMainForm
   end
   object LeftPanel: TPanel
     Left = 6
-    Height = 512
-    Top = 40
-    Width = 213
+    Height = 506
+    Top = 46
+    Width = 350
     Align = alLeft
     BorderSpacing.Left = 6
     BorderSpacing.Top = 2
@@ -1105,14 +1105,14 @@ object MainForm: TMainForm
     BevelOuter = bvNone
     BorderStyle = bsSingle
     Caption = 'LeftPanel'
-    ClientHeight = 508
-    ClientWidth = 209
+    ClientHeight = 502
+    ClientWidth = 346
     TabOrder = 4
     object VT1: TVirtualStringTree
       Left = 0
-      Height = 508
+      Height = 502
       Top = 0
-      Width = 209
+      Width = 346
       Align = alClient
       BorderStyle = bsNone
       DefaultText = 'Node'

@@ -6,7 +6,11 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  Buttons, fpspreadsheetgrid, USchemeTypes, DK_Vector, DK_StrUtils, DK_Dialogs;
+  Buttons, fpspreadsheetgrid,
+  //DK packages utils
+  DK_Vector, DK_StrUtils, DK_Dialogs,
+  //Project utils
+  UTypes, UScheme;
 
 type
 
@@ -22,18 +26,12 @@ type
     TableDescriptionEdit: TEdit;
     TableNameEdit: TEdit;
     TableNotesMemo: TMemo;
-
     procedure CancelButtonClick(Sender: TObject);
-    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormShow(Sender: TObject);
     procedure SaveButtonClick(Sender: TObject);
-
   private
-    CanFormClose: Boolean;
     EditMode: Byte;
     BaseScheme: TBaseScheme;
-    procedure EditSave;
-    procedure EditCancel;
   public
     procedure BaseSchemeSet(const ABaseScheme: TBaseScheme; const AEditMode: Byte);
   end;
@@ -47,19 +45,38 @@ implementation
 
 { TTableEditForm }
 
+procedure TTableEditForm.FormShow(Sender: TObject);
+begin
+  if EditMode=2 {edit} then
+  begin
+    TableNameEdit.Text:= BaseScheme.ActiveTable.TableName;
+    TableDescriptionEdit.Text:= BaseScheme.ActiveTable.Description;
+    VToStrings(BaseScheme.ActiveTable.Notes, TableNotesMemo.Lines);
+  end;
+  TableNameEdit.SetFocus;
+end;
 
+procedure TTableEditForm.BaseSchemeSet(const ABaseScheme: TBaseScheme;
+  const AEditMode: Byte);
+begin
+  BaseScheme:= ABaseScheme;
+  EditMode:= AEditMode;
+end;
 
-procedure TTableEditForm.EditSave;
+procedure TTableEditForm.CancelButtonClick(Sender: TObject);
+begin
+  ModalResult:= mrCancel;
+end;
+
+procedure TTableEditForm.SaveButtonClick(Sender: TObject);
 var
   S: String;
   TmpTable: TTable;
 begin
-  CanFormClose:= False;
-
   S:= STrim(TableNameEdit.Text);
   if S=EmptyStr then
   begin
-    ShowInfo('Не указано наименование таблицы!');
+    Inform('Не указано наименование таблицы!');
     Exit;
   end;
 
@@ -78,51 +95,9 @@ begin
     else if EditMode=2 {edit} then
       BaseScheme.TableSet(TmpTable);
     ModalResult:= mrOK;
-    CanFormClose:= True;
   except
-    on E: EDuplicateException do ShowInfo(E.Message);
+    on E: EDuplicateException do Inform(E.Message);
   end;
-
-end;
-
-procedure TTableEditForm.EditCancel;
-begin
-  CanFormClose:= True;
-  ModalResult:= mrCancel;
-end;
-
-procedure TTableEditForm.BaseSchemeSet(const ABaseScheme: TBaseScheme;
-  const AEditMode: Byte);
-begin
-  BaseScheme:= ABaseScheme;
-  EditMode:= AEditMode;
-end;
-
-procedure TTableEditForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-begin
-  CanClose:= CanFormClose;
-end;
-
-procedure TTableEditForm.CancelButtonClick(Sender: TObject);
-begin
-  EditCancel;
-end;
-
-procedure TTableEditForm.FormShow(Sender: TObject);
-begin
-  CanFormClose:= True;
-  if EditMode=2 {edit} then
-  begin
-    TableNameEdit.Text:= BaseScheme.ActiveTable.TableName;
-    TableDescriptionEdit.Text:= BaseScheme.ActiveTable.Description;
-    VToStrings(BaseScheme.ActiveTable.Notes, TableNotesMemo.Lines);
-  end;
-  TableNameEdit.SetFocus;
-end;
-
-procedure TTableEditForm.SaveButtonClick(Sender: TObject);
-begin
-  EditSave;
 end;
 
 end.

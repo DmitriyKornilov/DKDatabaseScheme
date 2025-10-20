@@ -6,7 +6,11 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, CheckLst,
-  ExtCtrls, Buttons, rxctrls, USchemeTypes, DK_Dialogs, DK_Vector, DK_StrUtils;
+  ExtCtrls, Buttons, rxctrls,
+  //DK packages utils
+  DK_Dialogs, DK_Vector, DK_StrUtils,
+  //Project utils
+  UTypes, UScheme;
 
 type
 
@@ -30,22 +34,15 @@ type
     procedure FieldCheckListBoxSelectionChange(Sender: TObject; User: boolean);
     procedure FieldDownButtonClick(Sender: TObject);
     procedure FieldUpButtonClick(Sender: TObject);
-    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormShow(Sender: TObject);
     procedure SaveButtonClick(Sender: TObject);
   private
-    CanFormClose: Boolean;
     EditMode: Byte;
     BaseScheme: TBaseScheme;
     FieldNames: TStrVector;
     FieldFlags: TBoolVector;
     SelectedIndex: Integer;
-
-    procedure EditSave;
-    procedure EditCancel;
-
     procedure FieldListSet;
-
     procedure FieldMove(ADirection: Integer);
   public
     procedure BaseSchemeSet(const ABaseScheme: TBaseScheme; const AEditMode: Byte);
@@ -60,9 +57,10 @@ implementation
 
 { TIndexEditForm }
 
-procedure TIndexEditForm.CancelButtonClick(Sender: TObject);
+procedure TIndexEditForm.FormShow(Sender: TObject);
 begin
-  EditCancel;
+  SelectedIndex:= -1;
+  FieldListSet;
 end;
 
 procedure TIndexEditForm.FieldCheckListBoxClickCheck(Sender: TObject);
@@ -104,42 +102,27 @@ begin
   FieldMove(-1);
 end;
 
-procedure TIndexEditForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+procedure TIndexEditForm.CancelButtonClick(Sender: TObject);
 begin
-  CanClose:= CanFormClose;
-end;
-
-procedure TIndexEditForm.FormShow(Sender: TObject);
-begin
-  CanFormClose:= True;
-  SelectedIndex:= -1;
-  FieldListSet;
-
+  ModalResult:= mrCancel;
 end;
 
 procedure TIndexEditForm.SaveButtonClick(Sender: TObject);
-begin
-  EditSave;
-end;
-
-procedure TIndexEditForm.EditSave;
 var
   TmpIndex: TIndex;
   S: String;
   i: Integer;
 begin
-  CanFormClose:= False;
-
   S:= STrim(IndexNameEdit.Text);
   if S=EmptyStr then
   begin
-    ShowInfo('Не указано наименование индекса!');
+    Inform('Не указано наименование индекса!');
     Exit;
   end;
 
   if not VIsTrue(FieldFlags) then
   begin
-    ShowInfo('Не указано ни одного поля для индекса!');
+    Inform('Не указано ни одного поля для индекса!');
     Exit;
   end;
 
@@ -156,16 +139,9 @@ begin
     else if EditMode=2 {edit} then
       BaseScheme.IndexSet(TmpIndex);
     ModalResult:= mrOK;
-    CanFormClose:= True;
   except
-    on E: EDuplicateException do ShowInfo(E.Message);
+    on E: EDuplicateException do Inform(E.Message);
   end;
-end;
-
-procedure TIndexEditForm.EditCancel;
-begin
-  CanFormClose:= True;
-  ModalResult:= mrCancel;
 end;
 
 procedure TIndexEditForm.FieldListSet;
@@ -220,7 +196,6 @@ begin
     UniqueCheckBox.Checked:= BaseScheme.ActiveIndex.Unique;
     WhereMemo.Text:= BaseScheme.ActiveIndex.Where;
   end;
-
 end;
 
 end.

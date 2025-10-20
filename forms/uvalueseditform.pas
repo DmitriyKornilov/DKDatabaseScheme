@@ -6,8 +6,11 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
-  Grids, StdCtrls, rxctrls, USchemeTypes, DK_Vector, DK_Dialogs, DateUtils,
-  DK_StrUtils;
+  Grids, StdCtrls, rxctrls, DateUtils,
+  //DK packages utils
+  DK_Vector, DK_Dialogs, DK_StrUtils,
+  //Project utils
+  UTypes, UScheme;
 
 type
 
@@ -25,15 +28,11 @@ type
     procedure AddButtonClick(Sender: TObject);
     procedure CancelButtonClick(Sender: TObject);
     procedure DelButtonClick(Sender: TObject);
-    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormShow(Sender: TObject);
     procedure SaveButtonClick(Sender: TObject);
     procedure ValuesGridBeforeSelection(Sender: TObject; aCol, aRow: Integer);
   private
-    CanFormClose: Boolean;
     BaseScheme: TBaseScheme;
-    procedure EditSave;
-    procedure EditCancel;
     procedure SetDelButtonEnabled;
     procedure SetRowNumbers;
   public
@@ -49,17 +48,11 @@ implementation
 
 { TValuesEditForm }
 
-procedure TValuesEditForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-begin
-  CanClose:= CanFormClose;
-end;
-
 procedure TValuesEditForm.FormShow(Sender: TObject);
 var
   i: Integer;
   Tbl: TTable;
   Cln: TGridColumn;
-
 
   procedure AddColumn(const ACaption: String;
                       const AValues: TStrVector;
@@ -77,8 +70,6 @@ var
   end;
 
 begin
-  CanFormClose:= True;
-
   Tbl:= BaseScheme.ActiveTable;
   ValuesGrid.RowCount:= Length(Tbl.Fields[0].ExistingValues) + 1;
   ValuesGrid.FixedRows:= 1;
@@ -91,40 +82,12 @@ begin
   SetDelButtonEnabled;
 end;
 
-procedure TValuesEditForm.SaveButtonClick(Sender: TObject);
-begin
-  EditSave;
-end;
-
-procedure TValuesEditForm.ValuesGridBeforeSelection(Sender: TObject; aCol,
-  aRow: Integer);
-begin
-  if ACol=0 then
-    ValuesGrid.Options:= ValuesGrid.Options - [goEditing]
-  else
-    ValuesGrid.Options:= ValuesGrid.Options + [goEditing];
-end;
-
 procedure TValuesEditForm.CancelButtonClick(Sender: TObject);
 begin
-  EditCancel;
+  ModalResult:= mrCancel;
 end;
 
-procedure TValuesEditForm.DelButtonClick(Sender: TObject);
-begin
-  ValuesGrid.DeleteRow(ValuesGrid.Row);
-  SetRowNumbers;
-  SetDelButtonEnabled;
-end;
-
-procedure TValuesEditForm.AddButtonClick(Sender: TObject);
-begin
-  ValuesGrid.RowCount:= ValuesGrid.RowCount+1;
-  SetRowNumbers;
-  SetDelButtonEnabled;
-end;
-
-procedure TValuesEditForm.EditSave;
+procedure TValuesEditForm.SaveButtonClick(Sender: TObject);
 var
   i, j: Integer;
   Tbl: TTable;
@@ -150,12 +113,12 @@ var
           Value:= ValuesGrid.Cells[C,R];
           if (Value=EmptyStr) and SEmpty(Tbl.Fields[C-1].DefaultValue) then
           begin
-            ShowInfo('Не указано значение №' + RowNum + ' для поля "' + FldName + '"!');
+            Inform('Не указано значение №' + RowNum + ' для поля "' + FldName + '"!');
             Exit;
           end;
           if SEmpty(Tbl.Fields[C-1].DefaultValue) and (not FieldValueCheck(Value, FldType)) then
           begin
-            ShowInfo('Некорректное значение №' +
+            Inform('Некорректное значение №' +
                       RowNum + ' для поля "' + FldName  + '" (' + FldType + ')!');
             Exit;
           end;
@@ -167,8 +130,6 @@ var
   end;
 
 begin
-  CanFormClose:= False;
-
   Tbl:= BaseScheme.ActiveTable;
 
   if not CheckValues then Exit;
@@ -181,13 +142,28 @@ begin
   end;
 
   ModalResult:= mrOK;
-  CanFormClose:= True;
 end;
 
-procedure TValuesEditForm.EditCancel;
+procedure TValuesEditForm.ValuesGridBeforeSelection(Sender: TObject; aCol, aRow: Integer);
 begin
-  CanFormClose:= True;
-  ModalResult:= mrCancel;
+  if ACol=0 then
+    ValuesGrid.Options:= ValuesGrid.Options - [goEditing]
+  else
+    ValuesGrid.Options:= ValuesGrid.Options + [goEditing];
+end;
+
+procedure TValuesEditForm.DelButtonClick(Sender: TObject);
+begin
+  ValuesGrid.DeleteRow(ValuesGrid.Row);
+  SetRowNumbers;
+  SetDelButtonEnabled;
+end;
+
+procedure TValuesEditForm.AddButtonClick(Sender: TObject);
+begin
+  ValuesGrid.RowCount:= ValuesGrid.RowCount+1;
+  SetRowNumbers;
+  SetDelButtonEnabled;
 end;
 
 procedure TValuesEditForm.SetDelButtonEnabled;

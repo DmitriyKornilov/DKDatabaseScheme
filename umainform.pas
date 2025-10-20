@@ -8,10 +8,15 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  ComCtrls, USchemeTypes, fpspreadsheetgrid, DK_Vector, DK_LCLStrRus, DK_Dialogs,
-  UTableEditForm, UFieldEditForm, DividerBevel, SynEdit, SynHighlighterSQL,
-  rxctrls, UValuesEditForm, DK_SheetExporter, fpstypes, UIndexEditForm,
-  UExtraFont, VirtualTrees, DK_VSTTools, DK_Zoom;
+  ComCtrls, fpspreadsheetgrid, rxctrls, VirtualTrees, fpstypes, DividerBevel,
+  SynEdit, SynHighlighterSQL,
+  //DK packages utils
+  DK_Vector, DK_LCLStrRus, DK_Dialogs, DK_VSTTableTools, DK_Zoom, DK_Fonts,
+  DK_SheetExporter,
+  //Project utils
+  UTypes, UConst, UScheme,
+  //Forms
+  UTableEditForm, UFieldEditForm, UValuesEditForm, UIndexEditForm;
 
 type
 
@@ -124,6 +129,7 @@ type
 
     procedure ExportSpreadsheet;
     procedure ExportSQLScript;
+
   end;
 
 var
@@ -136,21 +142,35 @@ implementation
 { TMainForm }
 
 procedure TMainForm.FormCreate(Sender: TObject);
+var
+  AFontPath: String;
 begin
-  LoadExtraFont;
+  AFontPath:= ExtractFilePath(Application.ExeName) + 'font' + DirectorySeparator;
+  LoadExtraFont(AFontPath, SCHEME_FONT_FILENAME);
+  SQLSynEdit.Font.Name:= SCHEME_FONT_NAME_DEFAULT;
+  SQLSynEdit.Font.Size:= FIELD_NAME_FONT_SIZE;
+
   ZoomPercent:= 100;
   CreateZoomControls(50, 150, ZoomPercent, ZoomPanel, @SchemeDraw, True);
   BaseScheme:= TBaseScheme.Create(SchemeGrid);
   TableList:= TVSTStringList.Create(VT1, EmptyStr, @TableSelect);
+  TableList.ValuesFont.Name:= SCHEME_FONT_NAME_DEFAULT;
+  TableList.ValuesFont.Size:= FIELD_NAME_FONT_SIZE;
+  TableList.SelectedFont.Name:= SCHEME_FONT_NAME_DEFAULT;
+  TableList.SelectedFont.Size:= FIELD_NAME_FONT_SIZE;
   IsNewScheme:= True;
   SetSchemeChanged(False);
 end;
 
 procedure TMainForm.FormDestroy(Sender: TObject);
+var
+  AFontPath: String;
 begin
   if Assigned(BaseScheme) then FreeAndNil(BaseScheme);
   if Assigned(TableList) then FreeAndNil(TableList);
-  UnloadExtraFont;
+
+  AFontPath:= ExtractFilePath(Application.ExeName) + 'font' + DirectorySeparator;
+  UnloadExtraFont(AFontPath, SCHEME_FONT_FILENAME);
 end;
 
 procedure TMainForm.TableAddButtonClick(Sender: TObject);
@@ -273,16 +293,16 @@ end;
 
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 var
-  Answer: TModalResult;
+  Answer: Boolean;
 begin
   CanClose:= True;
   if not IsSchemeChanged then Exit;
-  Answer:= ShowQuestion('В схеме ' + Statusbar1.Panels[1].Text +
-                       ' есть несохраненные изменения! Сохранить?');
+  Answer:= Confirm('В схеме ' + Statusbar1.Panels[1].Text +
+                   ' есть несохраненные изменения! Сохранить?');
 
-  if Answer=mrCancel then
+  if not Answer then
     CanClose:= False
-  else if Answer=mrYes then
+  else
     BaseWrite;
 end;
 

@@ -6,8 +6,11 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
-  Buttons, USchemeTypes, DK_Vector, DK_StrUtils, DK_Dialogs,
-  DateUtils;
+  Buttons, DateUtils,
+  //DK packages utils
+  DK_Vector, DK_StrUtils, DK_Dialogs,
+  //Project utils
+  UTypes, UScheme;
 
 type
 
@@ -43,13 +46,9 @@ type
     RefOnDeleteComboBox: TComboBox;
     SaveButton: TSpeedButton;
     StatusCheckBox: TCheckBox;
-
-    procedure CancelButtonClick(Sender: TObject);
     procedure DefaultValueCheckBoxClick(Sender: TObject);
     procedure EmptyStrCheckBoxChange(Sender: TObject);
     procedure FKCheckBoxChange(Sender: TObject);
-    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-
     procedure FormShow(Sender: TObject);
     procedure PKCheckBoxClick(Sender: TObject);
     procedure RadioButton1Click(Sender: TObject);
@@ -57,12 +56,10 @@ type
     procedure RadioButton3Click(Sender: TObject);
     procedure RadioButton4Click(Sender: TObject);
     procedure RadioButton5Click(Sender: TObject);
-
     procedure RefTableComboBoxChange(Sender: TObject);
+    procedure CancelButtonClick(Sender: TObject);
     procedure SaveButtonClick(Sender: TObject);
-
   private
-    CanFormClose: Boolean;
     EditMode: Byte;
     BaseScheme: TBaseScheme;
 
@@ -71,8 +68,6 @@ type
     procedure FieldListSet;
     procedure ActionListSet;
     procedure SetRefComboboxEnabled;
-    procedure EditSave;
-    procedure EditCancel;
 
     procedure SetDefaultValueControls;
     procedure SetDefaultEmptyStr;
@@ -89,6 +84,51 @@ implementation
 {$R *.lfm}
 
 { TFieldEditForm }
+
+procedure TFieldEditForm.FormShow(Sender: TObject);
+var
+  Ref: TReferenceTo;
+begin
+  TableListSet;
+  ActionListSet;
+
+  if (EditMode=2 {edit}) or (EditMode=3 {new from old}) then
+  begin
+    FieldNameEdit.Text:= BaseScheme.ActiveField.FieldName;
+    PKCheckBox.Checked:= BaseScheme.ActiveField.PrimaryKey;
+    SetStatusCheckBoxCaption;
+    StatusCheckBox.Checked:= BaseScheme.ActiveField.Status;
+    NotNullCheckBox.Checked:= BaseScheme.ActiveField.NotNull;
+
+    case BaseScheme.ActiveField.FieldType of
+    'INTEGER' : RadioButton1.Checked:= True;
+    'DATETIME': RadioButton2.Checked:= True;
+    'TEXT'    : RadioButton3.Checked:= True;
+    'REAL'    : RadioButton4.Checked:= True;
+    'BLOB'    : RadioButton5.Checked:= True;
+    end;
+
+
+
+    DefaultValueCheckBox.Checked:= BaseScheme.ActiveField.DefaultValue<>EmptyStr;
+    SetDefaultValueControls;
+    DefaultValueEdit.Text:= BaseScheme.ActiveField.DefaultValue;
+
+    VToStrings(BaseScheme.ActiveField.Description, FieldDescriptionMemo.Lines);
+    //VToStrings(BaseScheme.ActiveField.ExistingValues, FieldExistingValuesMemo.Lines);
+
+    Ref:= BaseScheme.ActiveField.ReferenceTo;
+    if Ref.TableName<>EmptyStr then
+    begin
+      FKCheckBox.Checked:= True;
+      RefTableComboBox.ItemIndex:= RefTableComboBox.Items.IndexOf(Ref.TableName);
+      FieldListSet;
+      RefFieldComboBox.ItemIndex:= RefFieldComboBox.Items.IndexOf(Ref.FieldName);
+      RefOnDeleteComboBox.ItemIndex:= Ord(Ref.OnDelete);
+      RefOnUpdateComboBox.ItemIndex:= Ord(Ref.OnUpdate);
+    end;
+  end;
+end;
 
 procedure TFieldEditForm.PKCheckBoxClick(Sender: TObject);
 begin
@@ -125,9 +165,104 @@ begin
   FieldListSet;
 end;
 
-procedure TFieldEditForm.SaveButtonClick(Sender: TObject);
+procedure TFieldEditForm.CancelButtonClick(Sender: TObject);
 begin
-  EditSave;
+  ModalResult:= mrCancel;
+end;
+
+procedure TFieldEditForm.SaveButtonClick(Sender: TObject);
+var
+  S: String;
+  N, i: Integer;
+  TmpField: TField;
+begin
+  S:= STrim(FieldNameEdit.Text);
+  if S=EmptyStr then
+  begin
+    Inform('Не указано наименование поля!');
+    Exit;
+  end;
+
+  if FKCheckBox.Checked then
+  begin
+    if RefTableComboBox.Text=EmptyStr then
+    begin
+      Inform('Не указана таблица для внешнего ключа!');
+      Exit;
+    end;
+    if RefFieldComboBox.Text=EmptyStr then
+    begin
+      Inform('Не указано поле для внешнего ключа!');
+      Exit;
+    end;
+  end;
+
+  if EditMode=1 {new} then
+  begin
+    TmpField:= FieldCreate(EmptyStr, EmptyStr);
+    if Length(BaseScheme.ActiveTable.Fields)>0 then
+    begin
+      TmpField.ExistingValues:= nil;
+      N:= Length(BaseScheme.ActiveTable.Fields[0].ExistingValues);
+      if N>0 then
+        for i:= 0 to N-1 do
+          VAppend(TmpField.ExistingValues, EmptyStr);
+    end;
+  end
+  else if (EditMode=2 {edit}) or (EditMode=3 {new from old}) then
+  begin
+    TmpField:= FieldCopy(BaseScheme.ActiveField);
+  end;
+
+  TmpField.FieldName:= S;
+  TmpField.Description:= VFromStrings(FieldDescriptionMemo.Lines);
+
+  TmpField.PrimaryKey:= PKCheckBox.Checked;
+  TmpField.Status:= StatusCheckBox.Checked;
+  TmpField.NotNull:= NotNullCheckBox.Checked;
+
+  if RadioButton1.Checked then
+    TmpField.FieldType:= 'INTEGER'
+  else if RadioButton2.Checked then
+    TmpField.FieldType:= 'DATETIME'
+  else if RadioButton3.Checked then
+    TmpField.FieldType:= 'TEXT'
+  else if RadioButton4.Checked then
+    TmpField.FieldType:= 'REAL'
+  else if RadioButton5.Checked then
+    TmpField.FieldType:= 'BLOB';
+
+  TmpField.DefaultValue:= EmptyStr;
+  if DefaultValueCheckBox.Checked then
+  begin
+    S:= STrim(DefaultValueEdit.Text);
+    if FieldValueCheck(S, TmpField.FieldType) then
+      TmpField.DefaultValue:= S
+    else begin
+      Inform('Некорректное значение по умолчанию!');
+      Exit;
+    end;
+  end;
+
+  if FKCheckBox.Checked then
+  begin
+    TmpField.ReferenceTo.TableName:= RefTableComboBox.Text;
+    TmpField.ReferenceTo.FieldName:= RefFieldComboBox.Text;
+    TmpField.ReferenceTo.OnDelete:= TForeignKeyAction(RefOnDeleteComboBox.ItemIndex);
+    TmpField.ReferenceTo.OnUpdate:= TForeignKeyAction(RefOnUpdateComboBox.ItemIndex);
+  end
+  else
+    ReferenceToClear(TmpField.ReferenceTo);
+
+  try
+    if (EditMode=1 {new}) or ((EditMode=3 {new from old})) then
+      BaseScheme.FieldAdd(TmpField)
+    else if EditMode=2 {edit} then
+      BaseScheme.FieldSet(TmpField);
+    ModalResult:= mrOK;
+  except
+    on E: EDuplicateException do Inform(E.Message);
+  end;
 end;
 
 procedure TFieldEditForm.SetStatusCheckBoxCaption;
@@ -176,111 +311,6 @@ begin
   RefOnUpdateComboBox.Enabled:= RefTableComboBox.Enabled;
 end;
 
-procedure TFieldEditForm.EditSave;
-var
-  S: String;
-  N, i: Integer;
-  TmpField: TField;
-begin
-  CanFormClose:= False;
-
-  S:= STrim(FieldNameEdit.Text);
-  if S=EmptyStr then
-  begin
-    ShowInfo('Не указано наименование поля!');
-    Exit;
-  end;
-
-  if FKCheckBox.Checked then
-  begin
-    if RefTableComboBox.Text=EmptyStr then
-    begin
-      ShowInfo('Не указана таблица для внешнего ключа!');
-      Exit;
-    end;
-    if RefFieldComboBox.Text=EmptyStr then
-    begin
-      ShowInfo('Не указано поле для внешнего ключа!');
-      Exit;
-    end;
-  end;
-
-  if EditMode=1 {new} then
-  begin
-    TmpField:= FieldCreate(EmptyStr, EmptyStr);
-    if Length(BaseScheme.ActiveTable.Fields)>0 then
-    begin
-      TmpField.ExistingValues:= nil;
-      N:= Length(BaseScheme.ActiveTable.Fields[0].ExistingValues);
-      if N>0 then
-        for i:= 0 to N-1 do
-          VAppend(TmpField.ExistingValues, EmptyStr);
-    end;
-  end
-  else if (EditMode=2 {edit}) or (EditMode=3 {new from old}) then
-  begin
-    TmpField:= FieldCopy(BaseScheme.ActiveField);
-  end;
-
-  TmpField.FieldName:= S;
-  TmpField.Description:= VFromStrings(FieldDescriptionMemo.Lines);
-
-  TmpField.PrimaryKey:= PKCheckBox.Checked;
-  TmpField.Status:= StatusCheckBox.Checked;
-  TmpField.NotNull:= NotNullCheckBox.Checked;
-
-  if RadioButton1.Checked then
-    TmpField.FieldType:= 'INTEGER'
-  else if RadioButton2.Checked then
-    TmpField.FieldType:= 'DATETIME'
-  else if RadioButton3.Checked then
-    TmpField.FieldType:= 'TEXT'
-  else if RadioButton4.Checked then
-    TmpField.FieldType:= 'REAL'
-  else if RadioButton5.Checked then
-    TmpField.FieldType:= 'BLOB';
-
-  TmpField.DefaultValue:= EmptyStr;
-  if DefaultValueCheckBox.Checked then
-  begin
-    S:= STrim(DefaultValueEdit.Text);
-    if FieldValueCheck(S, TmpField.FieldType) then
-      TmpField.DefaultValue:= S
-    else begin
-      ShowInfo('Некорректное значение по умолчанию!');
-      Exit;
-    end;
-  end;
-
-  if FKCheckBox.Checked then
-  begin
-    TmpField.ReferenceTo.TableName:= RefTableComboBox.Text;
-    TmpField.ReferenceTo.FieldName:= RefFieldComboBox.Text;
-    TmpField.ReferenceTo.OnDelete:= TForeignKeyAction(RefOnDeleteComboBox.ItemIndex);
-    TmpField.ReferenceTo.OnUpdate:= TForeignKeyAction(RefOnUpdateComboBox.ItemIndex);
-  end
-  else
-    ReferenceToClear(TmpField.ReferenceTo);
-
-  try
-    if (EditMode=1 {new}) or ((EditMode=3 {new from old})) then
-      BaseScheme.FieldAdd(TmpField)
-    else if EditMode=2 {edit} then
-      BaseScheme.FieldSet(TmpField);
-    ModalResult:= mrOK;
-    CanFormClose:= True;
-  except
-    on E: EDuplicateException do ShowInfo(E.Message);
-  end;
-
-end;
-
-procedure TFieldEditForm.EditCancel;
-begin
-  CanFormClose:= True;
-  ModalResult:= mrCancel;
-end;
-
 procedure TFieldEditForm.SetDefaultEmptyStr;
 begin
   EmptyStrCheckBox.Visible:= RadioButton3.Checked{TEXT} and
@@ -303,11 +333,6 @@ procedure TFieldEditForm.BaseSchemeSet(const ABaseScheme: TBaseScheme;
 begin
   BaseScheme:= ABaseScheme;
   EditMode:= AEditMode;
-end;
-
-procedure TFieldEditForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-begin
-  CanClose:= CanFormClose;
 end;
 
 procedure TFieldEditForm.DefaultValueCheckBoxClick(Sender: TObject);
@@ -333,61 +358,9 @@ begin
   end;
 end;
 
-procedure TFieldEditForm.CancelButtonClick(Sender: TObject);
-begin
-  EditCancel;
-end;
-
 procedure TFieldEditForm.FKCheckBoxChange(Sender: TObject);
 begin
   SetRefComboboxEnabled;
-end;
-
-procedure TFieldEditForm.FormShow(Sender: TObject);
-var
-  Ref: TReferenceTo;
-begin
-  CanFormClose:= True;
-
-  TableListSet;
-  ActionListSet;
-
-  if (EditMode=2 {edit}) or (EditMode=3 {new from old}) then
-  begin
-    FieldNameEdit.Text:= BaseScheme.ActiveField.FieldName;
-    PKCheckBox.Checked:= BaseScheme.ActiveField.PrimaryKey;
-    SetStatusCheckBoxCaption;
-    StatusCheckBox.Checked:= BaseScheme.ActiveField.Status;
-    NotNullCheckBox.Checked:= BaseScheme.ActiveField.NotNull;
-
-    case BaseScheme.ActiveField.FieldType of
-    'INTEGER' : RadioButton1.Checked:= True;
-    'DATETIME': RadioButton2.Checked:= True;
-    'TEXT'    : RadioButton3.Checked:= True;
-    'REAL'    : RadioButton4.Checked:= True;
-    'BLOB'    : RadioButton5.Checked:= True;
-    end;
-
-
-
-    DefaultValueCheckBox.Checked:= BaseScheme.ActiveField.DefaultValue<>EmptyStr;
-    SetDefaultValueControls;
-    DefaultValueEdit.Text:= BaseScheme.ActiveField.DefaultValue;
-
-    VToStrings(BaseScheme.ActiveField.Description, FieldDescriptionMemo.Lines);
-    //VToStrings(BaseScheme.ActiveField.ExistingValues, FieldExistingValuesMemo.Lines);
-
-    Ref:= BaseScheme.ActiveField.ReferenceTo;
-    if Ref.TableName<>EmptyStr then
-    begin
-      FKCheckBox.Checked:= True;
-      RefTableComboBox.ItemIndex:= RefTableComboBox.Items.IndexOf(Ref.TableName);
-      FieldListSet;
-      RefFieldComboBox.ItemIndex:= RefFieldComboBox.Items.IndexOf(Ref.FieldName);
-      RefOnDeleteComboBox.ItemIndex:= Ord(Ref.OnDelete);
-      RefOnUpdateComboBox.ItemIndex:= Ord(Ref.OnUpdate);
-    end;
-  end;
 end;
 
 end.

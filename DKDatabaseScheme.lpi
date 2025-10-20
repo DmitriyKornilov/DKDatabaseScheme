@@ -26,7 +26,7 @@
     </RunParams>
     <RequiredPackages>
       <Item>
-        <PackageName Value="DKZoom"/>
+        <PackageName Value="DKUIUtils"/>
       </Item>
       <Item>
         <PackageName Value="virtualtreeview_package"/>
@@ -73,12 +73,12 @@
         <UnitName Value="UMainForm"/>
       </Unit>
       <Unit>
-        <Filename Value="uschemetypes.pas"/>
+        <Filename Value="utils\utypes.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="USchemeTypes"/>
+        <UnitName Value="UTypes"/>
       </Unit>
       <Unit>
-        <Filename Value="utableeditform.pas"/>
+        <Filename Value="forms\utableeditform.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="TableEditForm"/>
         <HasResources Value="True"/>
@@ -86,7 +86,7 @@
         <UnitName Value="UTableEditForm"/>
       </Unit>
       <Unit>
-        <Filename Value="ufieldeditform.pas"/>
+        <Filename Value="forms\ufieldeditform.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="FieldEditForm"/>
         <HasResources Value="True"/>
@@ -94,7 +94,7 @@
         <UnitName Value="UFieldEditForm"/>
       </Unit>
       <Unit>
-        <Filename Value="uvalueseditform.pas"/>
+        <Filename Value="forms\uvalueseditform.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="ValuesEditForm"/>
         <HasResources Value="True"/>
@@ -102,7 +102,7 @@
         <UnitName Value="UValuesEditForm"/>
       </Unit>
       <Unit>
-        <Filename Value="uindexeditform.pas"/>
+        <Filename Value="forms\uindexeditform.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="IndexEditForm"/>
         <HasResources Value="True"/>
@@ -110,9 +110,19 @@
         <UnitName Value="UIndexEditForm"/>
       </Unit>
       <Unit>
-        <Filename Value="uextrafont.pas"/>
+        <Filename Value="utils\uconst.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="UExtraFont"/>
+        <UnitName Value="UConst"/>
+      </Unit>
+      <Unit>
+        <Filename Value="utils\usheet.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="USheet"/>
+      </Unit>
+      <Unit>
+        <Filename Value="utils\uscheme.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="UScheme"/>
       </Unit>
     </Units>
   </ProjectOptions>
@@ -124,6 +134,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
+      <OtherUnitFiles Value="utils;forms"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>

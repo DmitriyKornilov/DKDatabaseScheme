@@ -10,9 +10,9 @@ uses
   athreads,
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, UMainForm, USchemeTypes, UTableEditForm, UFieldEditForm,
-  lazcontrols, datetimectrls, rxnew, UValuesEditForm, UIndexEditForm,
-  UExtraFont;
+  Forms, UMainForm, UTypes, UTableEditForm, UFieldEditForm, lazcontrols,
+  datetimectrls, rxnew, UValuesEditForm, UIndexEditForm, UConst, USheet, 
+UScheme;
 
 {$R *.res}
 
