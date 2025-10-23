@@ -8,8 +8,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  ComCtrls, fpspreadsheetgrid, rxctrls, VirtualTrees, fpstypes, DividerBevel,
-  SynEdit, SynHighlighterSQL,
+  ComCtrls, fpspreadsheetgrid, VirtualTrees, fpstypes, DividerBevel,
+  SynEdit, SynHighlighterSQL, Buttons,
   //DK packages utils
   DK_Vector, DK_LCLStrRus, DK_Dialogs, DK_VSTTableTools, DK_Zoom, DK_Fonts,
   DK_SheetExporter,
@@ -23,22 +23,30 @@ type
   { TMainForm }
 
   TMainForm = class(TForm)
-    BaseNewButton: TRxSpeedButton;
+    BaseNewButton: TSpeedButton;
+    BaseOpenButton: TSpeedButton;
+    BaseSaveAsButton: TSpeedButton;
+    BaseSaveButton: TSpeedButton;
     Bevel1: TBevel;
     CheckBox1: TCheckBox;
     CheckBox2: TCheckBox;
-    DividerBevel4: TDividerBevel;
-    DividerBevel5: TDividerBevel;
-    ExportSpreadsheetButton: TRxSpeedButton;
-    BaseSaveAsButton: TRxSpeedButton;
+    DividerBevel1: TDividerBevel;
     DividerBevel2: TDividerBevel;
     DividerBevel3: TDividerBevel;
-    ExportSQLScriptButton: TRxSpeedButton;
-    FieldValuesButton: TRxSpeedButton;
-    FieldDownButton: TRxSpeedButton;
-    FieldUpButton: TRxSpeedButton;
-    IndexEditButton: TRxSpeedButton;
-    IndexDeleteButton: TRxSpeedButton;
+    DividerBevel4: TDividerBevel;
+    DividerBevel5: TDividerBevel;
+    ExportSpreadsheetButton: TSpeedButton;
+    ExportSQLScriptButton: TSpeedButton;
+    FieldAddButton: TSpeedButton;
+    FieldDeleteButton: TSpeedButton;
+    FieldDownButton: TSpeedButton;
+    FieldEditButton: TSpeedButton;
+    FieldUpButton: TSpeedButton;
+    FieldValuesButton: TSpeedButton;
+    ImageList1: TImageList;
+    IndexAddButton: TSpeedButton;
+    IndexDeleteButton: TSpeedButton;
+    IndexEditButton: TSpeedButton;
     Panel3: TPanel;
     LeftPanel: TPanel;
     SaveDialog2: TSaveDialog;
@@ -47,22 +55,14 @@ type
     SQLSynEdit: TSynEdit;
     StatusBar1: TStatusBar;
     SynSQLSyn1: TSynSQLSyn;
-    IndexAddButton: TRxSpeedButton;
     Splitter2: TSplitter;
-    TableAddButton: TRxSpeedButton;
-    DividerBevel1: TDividerBevel;
-    ImageList1: TImageList;
-    BaseOpenButton: TRxSpeedButton;
-    BaseSaveButton: TRxSpeedButton;
-    FieldAddButton: TRxSpeedButton;
-    FieldEditButton: TRxSpeedButton;
-    FieldDeleteButton: TRxSpeedButton;
-    TableEditButton: TRxSpeedButton;
+    TableAddButton: TSpeedButton;
     OpenDialog1: TOpenDialog;
     MainPanel: TPanel;
+    TableDeleteButton: TSpeedButton;
+    TableEditButton: TSpeedButton;
     ToolPanel: TPanel;
     SaveDialog1: TSaveDialog;
-    TableDeleteButton: TRxSpeedButton;
     VT1: TVirtualStringTree;
     ZoomPanel: TPanel;
 

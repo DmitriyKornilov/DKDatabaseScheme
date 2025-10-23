@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
-  Grids, StdCtrls, rxctrls, DateUtils,
+  Grids, StdCtrls, DateUtils,
   //DK packages utils
   DK_Vector, DK_Dialogs, DK_StrUtils,
   //Project utils
@@ -17,9 +17,9 @@ type
   { TValuesEditForm }
 
   TValuesEditForm = class(TForm)
-    AddButton: TRxSpeedButton;
-    DelButton: TRxSpeedButton;
+    AddButton: TSpeedButton;
     CancelButton: TSpeedButton;
+    DelButton: TSpeedButton;
     Label1: TLabel;
     Panel1: TPanel;
     Panel2: TPanel;

@@ -30,6 +30,9 @@ type
     procedure DrawTable(const ATable: TTable;
                         const AFieldSelectedIndex, AIndexSelectedIndex: Integer;
                         var AFirstRow: Integer);
+    procedure MouseWheel(Sender: TObject; {%H-}Shift: TShiftState;
+                         {%H-}WheelDelta: Integer; {%H-}MousePos: TPoint;
+                         var {%H-}Handled: Boolean);
   public
     constructor Create(const AGrid: TsWorksheetGrid;
                        const AExistingValuesCount: Integer);
@@ -62,6 +65,7 @@ begin
   FGrid.ShowGridLines:= False;
   FGrid.ShowHeaders:= False;
   FGrid.SelectionPen.Style:= psClear;
+  FGrid.OnMouseWheel:= @MouseWheel;
 
   ColWidths:= VCreateInt([
     30,   // Левый отступ
@@ -571,6 +575,12 @@ begin
   FFirstRow:= AFirstRow;
   FLastRow:= FRow;
   AFirstRow:= FLastRow;
+end;
+
+procedure TSchemeSheet.MouseWheel(Sender: TObject; Shift: TShiftState;
+  WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
+begin
+  (Sender as TsWorksheetGrid).Invalidate;
 end;
 
 procedure TSchemeSheet.Draw(const ATable: TTable;

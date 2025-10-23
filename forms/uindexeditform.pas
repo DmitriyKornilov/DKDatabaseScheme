@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, CheckLst,
-  ExtCtrls, Buttons, rxctrls,
+  ExtCtrls, Buttons,
   //DK packages utils
   DK_Dialogs, DK_Vector, DK_StrUtils,
   //Project utils
@@ -19,8 +19,8 @@ type
   TIndexEditForm = class(TForm)
     CancelButton: TSpeedButton;
     FieldCheckListBox: TCheckListBox;
-    FieldDownButton: TRxSpeedButton;
-    FieldUpButton: TRxSpeedButton;
+    FieldDownButton: TSpeedButton;
+    FieldUpButton: TSpeedButton;
     Label5: TLabel;
     Label6: TLabel;
     WhereMemo: TMemo;

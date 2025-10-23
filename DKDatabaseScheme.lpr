@@ -11,7 +11,7 @@ uses
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms, UMainForm, UTypes, UTableEditForm, UFieldEditForm, lazcontrols,
-  datetimectrls, rxnew, UValuesEditForm, UIndexEditForm, UConst, USheet, 
+  datetimectrls, UValuesEditForm, UIndexEditForm, UConst, USheet, 
 UScheme;
 
 {$R *.res}
