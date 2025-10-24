@@ -1,11 +1,12 @@
 object MainForm: TMainForm
   Left = 446
-  Height = 470
+  Height = 588
   Top = 179
-  Width = 1000
+  Width = 1250
   Caption = 'Схема базы данных'
-  ClientHeight = 470
-  ClientWidth = 1000
+  ClientHeight = 588
+  ClientWidth = 1250
+  DesignTimePPI = 120
   WindowState = wsMaximized
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
@@ -15,7 +16,7 @@ object MainForm: TMainForm
     Left = 2
     Height = 40
     Top = 2
-    Width = 996
+    Width = 1246
     Align = alTop
     BorderSpacing.Left = 2
     BorderSpacing.Top = 2
@@ -24,17 +25,17 @@ object MainForm: TMainForm
     BevelOuter = bvNone
     BorderStyle = bsSingle
     ClientHeight = 36
-    ClientWidth = 992
+    ClientWidth = 1242
     TabOrder = 0
     object CheckBox1: TCheckBox
       AnchorSideLeft.Control = DividerBevel5
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = ToolPanel
       AnchorSideTop.Side = asrCenter
-      Left = 738
-      Height = 19
-      Top = 9
-      Width = 88
+      Left = 753
+      Height = 24
+      Top = 6
+      Width = 109
       Caption = 'Все таблицы'
       TabOrder = 0
       OnChange = CheckBox1Change
@@ -44,11 +45,11 @@ object MainForm: TMainForm
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = ToolPanel
       AnchorSideTop.Side = asrCenter
-      Left = 834
-      Height = 19
-      Top = 9
-      Width = 40
-      BorderSpacing.Left = 8
+      Left = 872
+      Height = 24
+      Top = 6
+      Width = 50
+      BorderSpacing.Left = 10
       Caption = 'DDL'
       Checked = True
       State = cbChecked
@@ -62,9 +63,9 @@ object MainForm: TMainForm
       AnchorSideBottom.Control = ToolPanel
       AnchorSideBottom.Side = asrBottom
       Left = 144
-      Height = 42
+      Height = 52
       Top = 0
-      Width = 18
+      Width = 21
       BevelWidth = 2
       Font.Style = [fsBold]
       Orientation = trVertical
@@ -76,10 +77,10 @@ object MainForm: TMainForm
       AnchorSideTop.Control = ToolPanel
       AnchorSideBottom.Control = ToolPanel
       AnchorSideBottom.Side = asrBottom
-      Left = 234
-      Height = 42
+      Left = 237
+      Height = 52
       Top = 0
-      Width = 18
+      Width = 21
       BevelWidth = 2
       Font.Style = [fsBold]
       Orientation = trVertical
@@ -91,10 +92,10 @@ object MainForm: TMainForm
       AnchorSideTop.Control = ToolPanel
       AnchorSideBottom.Control = ToolPanel
       AnchorSideBottom.Side = asrBottom
-      Left = 360
-      Height = 42
+      Left = 366
+      Height = 52
       Top = 0
-      Width = 18
+      Width = 21
       BevelWidth = 2
       Font.Style = [fsBold]
       Orientation = trVertical
@@ -106,10 +107,10 @@ object MainForm: TMainForm
       AnchorSideTop.Control = ToolPanel
       AnchorSideBottom.Control = ToolPanel
       AnchorSideBottom.Side = asrBottom
-      Left = 594
-      Height = 42
+      Left = 603
+      Height = 52
       Top = 0
-      Width = 18
+      Width = 21
       BevelWidth = 2
       Font.Style = [fsBold]
       Orientation = trVertical
@@ -121,10 +122,10 @@ object MainForm: TMainForm
       AnchorSideTop.Control = ToolPanel
       AnchorSideBottom.Control = ToolPanel
       AnchorSideBottom.Side = asrBottom
-      Left = 720
-      Height = 42
+      Left = 732
+      Height = 52
       Top = 0
-      Width = 18
+      Width = 21
       BevelWidth = 2
       Font.Style = [fsBold]
       Orientation = trVertical
@@ -218,7 +219,7 @@ object MainForm: TMainForm
       AnchorSideBottom.Control = ToolPanel
       AnchorSideBottom.Side = asrBottom
       Cursor = crHandPoint
-      Left = 162
+      Left = 165
       Height = 36
       Hint = 'Сохранить схему в файл электронной таблицы'
       Top = 0
@@ -239,7 +240,7 @@ object MainForm: TMainForm
       AnchorSideBottom.Control = ToolPanel
       AnchorSideBottom.Side = asrBottom
       Cursor = crHandPoint
-      Left = 198
+      Left = 201
       Height = 36
       Hint = 'Сохранить SQL скрипт'
       Top = 0
@@ -260,7 +261,7 @@ object MainForm: TMainForm
       AnchorSideBottom.Control = ToolPanel
       AnchorSideBottom.Side = asrBottom
       Cursor = crHandPoint
-      Left = 252
+      Left = 258
       Height = 36
       Hint = 'Новая таблица'
       Top = 0
@@ -280,7 +281,7 @@ object MainForm: TMainForm
       AnchorSideBottom.Control = ToolPanel
       AnchorSideBottom.Side = asrBottom
       Cursor = crHandPoint
-      Left = 288
+      Left = 294
       Height = 36
       Hint = 'Редактировать таблицу'
       Top = 0
@@ -301,7 +302,7 @@ object MainForm: TMainForm
       AnchorSideBottom.Control = ToolPanel
       AnchorSideBottom.Side = asrBottom
       Cursor = crHandPoint
-      Left = 324
+      Left = 330
       Height = 36
       Hint = 'Удалить таблицу'
       Top = 0
@@ -322,7 +323,7 @@ object MainForm: TMainForm
       AnchorSideBottom.Control = ToolPanel
       AnchorSideBottom.Side = asrBottom
       Cursor = crHandPoint
-      Left = 378
+      Left = 387
       Height = 36
       Hint = 'Новое поле'
       Top = 0
@@ -343,7 +344,7 @@ object MainForm: TMainForm
       AnchorSideBottom.Control = ToolPanel
       AnchorSideBottom.Side = asrBottom
       Cursor = crHandPoint
-      Left = 414
+      Left = 423
       Height = 36
       Hint = 'Редактировать поле'
       Top = 0
@@ -364,7 +365,7 @@ object MainForm: TMainForm
       AnchorSideBottom.Control = ToolPanel
       AnchorSideBottom.Side = asrBottom
       Cursor = crHandPoint
-      Left = 450
+      Left = 459
       Height = 36
       Hint = 'Удалить поле'
       Top = 0
@@ -385,7 +386,7 @@ object MainForm: TMainForm
       AnchorSideBottom.Control = ToolPanel
       AnchorSideBottom.Side = asrBottom
       Cursor = crHandPoint
-      Left = 486
+      Left = 495
       Height = 36
       Hint = 'Переместить поле вниз'
       Top = 0
@@ -406,7 +407,7 @@ object MainForm: TMainForm
       AnchorSideBottom.Control = ToolPanel
       AnchorSideBottom.Side = asrBottom
       Cursor = crHandPoint
-      Left = 522
+      Left = 531
       Height = 36
       Hint = 'Переместить поле вверх'
       Top = 0
@@ -427,7 +428,7 @@ object MainForm: TMainForm
       AnchorSideBottom.Control = ToolPanel
       AnchorSideBottom.Side = asrBottom
       Cursor = crHandPoint
-      Left = 558
+      Left = 567
       Height = 36
       Hint = 'Существующие значения'
       Top = 0
@@ -448,7 +449,7 @@ object MainForm: TMainForm
       AnchorSideBottom.Control = ToolPanel
       AnchorSideBottom.Side = asrBottom
       Cursor = crHandPoint
-      Left = 612
+      Left = 624
       Height = 36
       Hint = 'Новый индекс'
       Top = 0
@@ -469,7 +470,7 @@ object MainForm: TMainForm
       AnchorSideBottom.Control = ToolPanel
       AnchorSideBottom.Side = asrBottom
       Cursor = crHandPoint
-      Left = 648
+      Left = 660
       Height = 36
       Hint = 'Редактировать индекс'
       Top = 0
@@ -490,7 +491,7 @@ object MainForm: TMainForm
       AnchorSideBottom.Control = ToolPanel
       AnchorSideBottom.Side = asrBottom
       Cursor = crHandPoint
-      Left = 684
+      Left = 696
       Height = 36
       Hint = 'Удалить индекс'
       Top = 0
@@ -506,25 +507,25 @@ object MainForm: TMainForm
     end
   end
   object MainPanel: TPanel
-    Left = 287
-    Height = 401
+    Left = 358
+    Height = 513
     Top = 44
-    Width = 711
+    Width = 890
     Align = alClient
     BorderSpacing.Right = 2
     BorderSpacing.Bottom = 2
     BevelOuter = bvNone
-    ClientHeight = 401
-    ClientWidth = 711
+    ClientHeight = 513
+    ClientWidth = 890
     TabOrder = 1
     inline SQLSynEdit: TSynEdit
       Left = 0
-      Height = 204
-      Top = 197
-      Width = 711
+      Height = 255
+      Top = 258
+      Width = 890
       Align = alBottom
       Color = clWindow
-      Font.Height = -13
+      Font.Height = -16
       Font.Name = 'Courier New'
       Font.Pitch = fpFixed
       Font.Quality = fqCleartype
@@ -532,7 +533,7 @@ object MainForm: TMainForm
       ParentFont = False
       TabOrder = 0
       Gutter.Visible = False
-      Gutter.Width = 57
+      Gutter.Width = 72
       Gutter.MouseActions = <>
       RightGutter.Visible = False
       RightGutter.Width = 0
@@ -986,13 +987,13 @@ object MainForm: TMainForm
       LineHighlightColor.Foreground = clNone
       inline SynLeftGutterPartList1: TSynGutterPartList
         object SynGutterMarks1: TSynGutterMarks
-          Width = 24
+          Width = 30
           MouseActions = <>
           MaxExtraMarksColums = 0
           Options = [sgmoDeDuplicateMarksOnOverflow]
         end
         object SynGutterLineNumber1: TSynGutterLineNumber
-          Width = 17
+          Width = 21
           MouseActions = <>
           MarkupInfo.Background = clBtnFace
           MarkupInfo.Foreground = clNone
@@ -1002,18 +1003,19 @@ object MainForm: TMainForm
           LeadingZeros = False
         end
         object SynGutterChanges1: TSynGutterChanges
-          Width = 4
+          Width = 5
           MouseActions = <>
           ModifiedColor = 59900
           SavedColor = clGreen
         end
         object SynGutterSeparator1: TSynGutterSeparator
-          Width = 2
+          Width = 3
           MouseActions = <>
           MarkupInfo.Background = clWhite
           MarkupInfo.Foreground = clGray
         end
         object SynGutterCodeFolding1: TSynGutterCodeFolding
+          Width = 13
           MouseActions = <>
           MarkupInfo.Background = clNone
           MarkupInfo.Foreground = clGray
@@ -1026,30 +1028,30 @@ object MainForm: TMainForm
       AnchorSideBottom.Control = SQLSynEdit
       Cursor = crVSplit
       Left = 0
-      Height = 5
-      Top = 192
-      Width = 711
+      Height = 6
+      Top = 252
+      Width = 890
       Align = alBottom
       ResizeAnchor = akBottom
       ResizeStyle = rsLine
     end
     object Panel3: TPanel
       Left = 0
-      Height = 192
+      Height = 252
       Top = 0
-      Width = 711
+      Width = 890
       Align = alClient
       BevelOuter = bvNone
       BorderStyle = bsSingle
       Caption = 'Panel3'
-      ClientHeight = 188
-      ClientWidth = 707
+      ClientHeight = 248
+      ClientWidth = 886
       TabOrder = 2
       object SchemeGrid: TsWorksheetGrid
         Left = 0
-        Height = 168
+        Height = 224
         Top = 0
-        Width = 707
+        Width = 886
         AutoExpand = []
         DisplayFixedColRow = False
         FrozenCols = 0
@@ -1082,9 +1084,9 @@ object MainForm: TMainForm
       end
       object ZoomPanel: TPanel
         Left = 0
-        Height = 18
-        Top = 170
-        Width = 707
+        Height = 22
+        Top = 226
+        Width = 886
         Align = alBottom
         BevelOuter = bvNone
         ParentColor = False
@@ -1093,8 +1095,8 @@ object MainForm: TMainForm
       object Bevel1: TBevel
         Left = 0
         Height = 2
-        Top = 168
-        Width = 707
+        Top = 224
+        Width = 886
         Align = alBottom
         Shape = bsBottomLine
       end
@@ -1103,35 +1105,35 @@ object MainForm: TMainForm
   object Splitter2: TSplitter
     AnchorSideLeft.Control = LeftPanel
     AnchorSideLeft.Side = asrBottom
-    Left = 282
-    Height = 403
+    Left = 352
+    Height = 515
     Top = 44
-    Width = 5
+    Width = 6
     ResizeStyle = rsLine
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Height = 23
-    Top = 447
-    Width = 1000
+    Height = 29
+    Top = 559
+    Width = 1250
     Font.Color = clRed
     Panels = <    
       item
         Alignment = taCenter
-        Width = 40
+        Width = 50
       end    
       item
         Bevel = pbNone
-        Width = 12
+        Width = 15
       end>
     ParentFont = False
     SimplePanel = False
   end
   object LeftPanel: TPanel
     Left = 2
-    Height = 401
+    Height = 513
     Top = 44
-    Width = 280
+    Width = 350
     Align = alLeft
     BorderSpacing.Left = 2
     BorderSpacing.Top = 2
@@ -1139,14 +1141,14 @@ object MainForm: TMainForm
     BevelOuter = bvNone
     BorderStyle = bsSingle
     Caption = 'LeftPanel'
-    ClientHeight = 397
-    ClientWidth = 276
+    ClientHeight = 509
+    ClientWidth = 346
     TabOrder = 4
     object VT1: TVirtualStringTree
       Left = 0
-      Height = 397
+      Height = 509
       Top = 0
-      Width = 276
+      Width = 346
       Align = alClient
       BorderStyle = bsNone
       DefaultText = 'Node'
@@ -1159,14 +1161,14 @@ object MainForm: TMainForm
   object OpenDialog1: TOpenDialog
     Title = 'Открыть схему базы данных'
     Filter = 'Схема базы данных (*.json)|*.json'
-    Left = 242
-    Top = 58
+    Left = 303
+    Top = 73
   end
   object SaveDialog1: TSaveDialog
     Title = 'Сохранить схему базы данных'
     Filter = 'Схема базы данных (*.json)|*.json'
-    Left = 242
-    Top = 115
+    Left = 303
+    Top = 144
   end
   object SynSQLSyn1: TSynSQLSyn
     DefaultFilter = 'SQL Files (*.sql)|*.sql'
@@ -1175,20 +1177,20 @@ object MainForm: TMainForm
     CommentAttri.Style = []
     DataTypeAttri.Foreground = clGreen
     SQLDialect = sqlSQLite
-    Left = 243
-    Top = 237
+    Left = 304
+    Top = 296
   end
   object SaveDialog2: TSaveDialog
     Title = 'Сохранить схему базы данных'
     Filter = 'Файл DDL-скрипта (*.sql)|*.sql|Текстовый файл (*.txt)|*.txt'
-    Left = 352
-    Top = 115
+    Left = 440
+    Top = 144
   end
   object ImageList1: TImageList
     Height = 32
     Width = 32
-    Left = 243
-    Top = 176
+    Left = 304
+    Top = 220
     Bitmap = {
       4C7A180000002000000020000000B94A00000000000078DAED7D07741447D675
       7B6DE31CC004875DAFD7BBCE698D8DB10D26276393B3B131B6599B9C4D8E2267

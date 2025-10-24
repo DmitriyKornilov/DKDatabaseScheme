@@ -1,35 +1,36 @@
 object ValuesEditForm: TValuesEditForm
   Left = 357
-  Height = 300
+  Height = 375
   Top = 240
-  Width = 950
-  BorderStyle = bsSizeToolWin
-  ClientHeight = 300
-  ClientWidth = 950
+  Width = 1188
+  ClientHeight = 375
+  ClientWidth = 1188
+  DesignTimePPI = 120
   Position = poScreenCenter
+  OnDestroy = FormDestroy
   OnShow = FormShow
   object Panel1: TPanel
     Left = 0
     Height = 36
-    Top = 5
-    Width = 950
+    Top = 6
+    Width = 1188
     Align = alTop
     AutoSize = True
-    BorderSpacing.Top = 5
+    BorderSpacing.Top = 6
     BevelOuter = bvNone
     ClientHeight = 36
-    ClientWidth = 950
+    ClientWidth = 1188
     TabOrder = 0
     object AddButton: TSpeedButton
       AnchorSideLeft.Control = Panel1
       AnchorSideTop.Control = Panel1
       Cursor = crHandPoint
-      Left = 12
+      Left = 15
       Height = 36
       Hint = 'Новая строка'
       Top = 0
       Width = 36
-      BorderSpacing.Left = 12
+      BorderSpacing.Left = 15
       Flat = True
       Images = MainForm.ImageList1
       ImageIndex = 15
@@ -42,7 +43,7 @@ object ValuesEditForm: TValuesEditForm
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = Panel1
       Cursor = crHandPoint
-      Left = 48
+      Left = 51
       Height = 36
       Hint = 'Удалить строку'
       Top = 0
@@ -57,30 +58,30 @@ object ValuesEditForm: TValuesEditForm
   end
   object Panel2: TPanel
     Left = 0
-    Height = 50
-    Top = 250
-    Width = 950
+    Height = 56
+    Top = 319
+    Width = 1188
     Align = alBottom
     AutoSize = True
     BevelOuter = bvNone
-    ClientHeight = 50
-    ClientWidth = 950
+    ClientHeight = 56
+    ClientWidth = 1188
     TabOrder = 1
     object CancelButton: TSpeedButton
       AnchorSideTop.Control = Panel2
       AnchorSideRight.Control = Panel2
       AnchorSideRight.Side = asrBottom
       Cursor = crHandPoint
-      Left = 818
-      Height = 38
-      Top = 6
-      Width = 120
+      Left = 1023
+      Height = 40
+      Top = 8
+      Width = 150
       Anchors = [akTop, akRight]
-      BorderSpacing.Top = 6
-      BorderSpacing.Right = 12
-      BorderSpacing.Bottom = 6
-      Constraints.MinHeight = 26
-      Constraints.MinWidth = 110
+      BorderSpacing.Top = 8
+      BorderSpacing.Right = 15
+      BorderSpacing.Bottom = 8
+      Constraints.MinHeight = 32
+      Constraints.MinWidth = 138
       Caption = 'Отмена'
       Images = MainForm.ImageList1
       ImageIndex = 14
@@ -93,14 +94,14 @@ object ValuesEditForm: TValuesEditForm
       AnchorSideTop.Side = asrCenter
       AnchorSideRight.Control = CancelButton
       Cursor = crHandPoint
-      Left = 692
-      Height = 38
-      Top = 6
-      Width = 120
+      Left = 865
+      Height = 40
+      Top = 8
+      Width = 150
       Anchors = [akTop, akRight]
-      BorderSpacing.Right = 6
-      Constraints.MinHeight = 26
-      Constraints.MinWidth = 110
+      BorderSpacing.Right = 8
+      Constraints.MinHeight = 32
+      Constraints.MinWidth = 138
       Caption = 'Сохранить'
       Images = MainForm.ImageList1
       ImageIndex = 13
@@ -112,26 +113,26 @@ object ValuesEditForm: TValuesEditForm
       AnchorSideLeft.Control = Panel2
       AnchorSideTop.Control = CancelButton
       AnchorSideTop.Side = asrCenter
-      Left = 10
-      Height = 15
+      Left = 12
+      Height = 20
       Top = 18
-      Width = 562
-      BorderSpacing.Left = 10
+      Width = 710
+      BorderSpacing.Left = 12
       Caption = '*DATETIME указывать в формате ISO8601:    [YYYY]-[MM]-[DD]T[HH]:[NN]:[SS].[ZZZ]         (или ставить 0)'
       ParentColor = False
     end
   end
   object ValuesGrid: TStringGrid
-    Left = 12
-    Height = 203
-    Top = 41
-    Width = 926
-    Align = alClient
-    BorderSpacing.Left = 12
-    BorderSpacing.Right = 12
-    BorderSpacing.Bottom = 6
+    Left = 15
+    Height = 94
+    Top = 42
+    Width = 1158
+    Align = alTop
+    BorderSpacing.Left = 15
+    BorderSpacing.Right = 15
+    BorderSpacing.Bottom = 8
     ColCount = 0
-    DefaultColWidth = 144
+    DefaultColWidth = 180
     FixedCols = 0
     FixedRows = 0
     Flat = True
@@ -139,5 +140,19 @@ object ValuesEditForm: TValuesEditForm
     RowCount = 0
     TabOrder = 2
     OnBeforeSelection = ValuesGridBeforeSelection
+  end
+  object VT1: TVirtualStringTree
+    Left = 15
+    Height = 175
+    Top = 144
+    Width = 1158
+    Align = alClient
+    BorderSpacing.Left = 15
+    BorderSpacing.Right = 15
+    DefaultText = 'Node'
+    Header.AutoSizeIndex = 0
+    Header.Columns = <>
+    Header.MainColumn = -1
+    TabOrder = 3
   end
 end

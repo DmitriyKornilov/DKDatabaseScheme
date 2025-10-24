@@ -8,7 +8,7 @@ interface
 uses
   Classes, SysUtils, Graphics, fpjson, fpstypes, DateUtils,
   //DK packages utils
-  DK_Vector, DK_StrUtils;
+  DK_Vector, DK_StrUtils, DK_VSTTypes;
 
 type
 
@@ -72,6 +72,8 @@ type
 
   function FieldValueToSQLString(const AFieldValue, AFieldType: String): String;
   function FieldValueCheck(var AFieldValue: String; const AFieldType: String): Boolean;
+
+  function FieldTypeToColumnType(const AFieldType: String): TVSTColumnType;
 
 type
 
@@ -344,31 +346,43 @@ var
 begin
   Result:= True;
   case AFieldType of
-  'INTEGER' : Result:= TryStrToInt64(AFieldValue, i);
-  'DATETIME': if AFieldValue<>'0' then
-                  Result:= TryISO8601ToDate(AFieldValue, d);
-  'REAL'    : Result:= TryStrToFloat(AFieldValue, f);
-  //'TEXT'  not need
-  //'BLOB'  not need
+    'INTEGER' : Result:= TryStrToInt64(AFieldValue, i);
+    'DATETIME': if AFieldValue<>'0' then
+                    Result:= TryISO8601ToDate(AFieldValue, d);
+    'REAL'    : Result:= TryStrToFloat(AFieldValue, f);
+    //'TEXT'  not need
+    //'BLOB'  not need
+  end;
+end;
+
+function FieldTypeToColumnType(const AFieldType: String): TVSTColumnType;
+begin
+  Result:= ctUndefined;
+  case AFieldType of
+    'INTEGER' : Result:= ctInteger;
+    'DATETIME': Result:= ctDateTime;
+    'TEXT'    : Result:= ctString;
+    'REAL'    : Result:= ctDouble;
+    //'BLOB'  not need
   end;
 end;
 
 function FieldValueToSQLString(const AFieldValue, AFieldType: String): String;
 begin
   case AFieldType of
-  'INTEGER' : Result:= AFieldValue;
-  'DATETIME': if SameStr(AFieldValue, '0') then
-                Result:= '0'
-              else
-                Result:= FloatToStr(DateTimeToJulianDate(ISO8601ToDate(AFieldValue)));
+    'INTEGER' : Result:= AFieldValue;
+    'DATETIME': if SameStr(AFieldValue, '0') then
+                  Result:= '0'
+                else
+                  Result:= FloatToStr(DateTimeToJulianDate(ISO8601ToDate(AFieldValue)));
 
-  'TEXT'    : if SameStr(AFieldValue, 'EmptyStr') then
-                Result:= QuotedStr(EmptyStr)
-              else
-                Result:= QuotedStr(AFieldValue);
+    'TEXT'    : if SameStr(AFieldValue, 'EmptyStr') then
+                  Result:= QuotedStr(EmptyStr)
+                else
+                  Result:= QuotedStr(AFieldValue);
 
-  'REAL'    : Result:= AFieldValue;
-  //'BLOB'  not need
+    'REAL'    : Result:= AFieldValue;
+    //'BLOB'  not need
   end;
 end;
 

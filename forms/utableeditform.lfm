@@ -1,37 +1,38 @@
 object TableEditForm: TTableEditForm
   Left = 436
-  Height = 251
+  Height = 314
   Top = 352
-  Width = 832
+  Width = 1040
   Caption = 'Таблица'
-  ClientHeight = 251
-  ClientWidth = 832
+  ClientHeight = 314
+  ClientWidth = 1040
+  DesignTimePPI = 120
   Position = poScreenCenter
   OnShow = FormShow
   object Panel2: TPanel
     Left = 0
-    Height = 50
-    Top = 201
-    Width = 832
+    Height = 56
+    Top = 258
+    Width = 1040
     Align = alBottom
     AutoSize = True
     BevelOuter = bvNone
-    ClientHeight = 50
-    ClientWidth = 832
+    ClientHeight = 56
+    ClientWidth = 1040
     TabOrder = 0
     object SaveButton: TSpeedButton
       AnchorSideTop.Control = CancelButton
       AnchorSideTop.Side = asrCenter
       AnchorSideRight.Control = CancelButton
       Cursor = crHandPoint
-      Left = 574
-      Height = 38
-      Top = 6
-      Width = 120
+      Left = 717
+      Height = 40
+      Top = 8
+      Width = 150
       Anchors = [akTop, akRight]
-      BorderSpacing.Right = 6
-      Constraints.MinHeight = 26
-      Constraints.MinWidth = 110
+      BorderSpacing.Right = 8
+      Constraints.MinHeight = 32
+      Constraints.MinWidth = 138
       Caption = 'Сохранить'
       Images = MainForm.ImageList1
       ImageIndex = 13
@@ -44,16 +45,16 @@ object TableEditForm: TTableEditForm
       AnchorSideRight.Control = Panel2
       AnchorSideRight.Side = asrBottom
       Cursor = crHandPoint
-      Left = 700
-      Height = 38
-      Top = 6
-      Width = 120
+      Left = 875
+      Height = 40
+      Top = 8
+      Width = 150
       Anchors = [akTop, akRight]
-      BorderSpacing.Top = 6
-      BorderSpacing.Right = 12
-      BorderSpacing.Bottom = 6
-      Constraints.MinHeight = 26
-      Constraints.MinWidth = 110
+      BorderSpacing.Top = 8
+      BorderSpacing.Right = 15
+      BorderSpacing.Bottom = 8
+      Constraints.MinHeight = 32
+      Constraints.MinWidth = 138
       Caption = 'Отмена'
       Images = MainForm.ImageList1
       ImageIndex = 14
@@ -66,11 +67,11 @@ object TableEditForm: TTableEditForm
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = TableNameEdit
     AnchorSideTop.Side = asrCenter
-    Left = 12
-    Height = 15
-    Top = 16
-    Width = 83
-    BorderSpacing.Left = 12
+    Left = 15
+    Height = 20
+    Top = 19
+    Width = 107
+    BorderSpacing.Left = 15
     Caption = 'Наименование'
   end
   object TableNameEdit: TEdit
@@ -79,25 +80,25 @@ object TableEditForm: TTableEditForm
     AnchorSideTop.Control = Owner
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
-    Left = 101
-    Height = 23
-    Top = 12
-    Width = 719
+    Left = 130
+    Height = 28
+    Top = 15
+    Width = 895
     Anchors = [akTop, akLeft, akRight]
-    BorderSpacing.Left = 6
-    BorderSpacing.Top = 12
-    BorderSpacing.Right = 12
+    BorderSpacing.Left = 8
+    BorderSpacing.Top = 15
+    BorderSpacing.Right = 15
     TabOrder = 1
   end
   object Label2: TLabel
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = TableDescriptionEdit
     AnchorSideTop.Side = asrCenter
-    Left = 12
-    Height = 15
-    Top = 51
-    Width = 58
-    BorderSpacing.Left = 12
+    Left = 15
+    Height = 20
+    Top = 62
+    Width = 74
+    BorderSpacing.Left = 15
     Caption = 'Описание '
   end
   object TableDescriptionEdit: TEdit
@@ -107,25 +108,25 @@ object TableEditForm: TTableEditForm
     AnchorSideTop.Side = asrBottom
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
-    Left = 101
-    Height = 23
-    Top = 47
-    Width = 719
+    Left = 130
+    Height = 28
+    Top = 58
+    Width = 895
     Anchors = [akTop, akLeft, akRight]
-    BorderSpacing.Left = 6
-    BorderSpacing.Top = 12
-    BorderSpacing.Right = 12
-    BorderSpacing.Bottom = 12
+    BorderSpacing.Left = 8
+    BorderSpacing.Top = 15
+    BorderSpacing.Right = 15
+    BorderSpacing.Bottom = 15
     TabOrder = 2
   end
   object Label3: TLabel
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = TableNotesMemo
-    Left = 12
-    Height = 15
-    Top = 82
-    Width = 46
-    BorderSpacing.Left = 12
+    Left = 15
+    Height = 20
+    Top = 101
+    Width = 57
+    BorderSpacing.Left = 15
     Caption = 'Заметки'
   end
   object TableNotesMemo: TMemo
@@ -135,12 +136,12 @@ object TableEditForm: TTableEditForm
     AnchorSideRight.Control = TableDescriptionEdit
     AnchorSideRight.Side = asrBottom
     AnchorSideBottom.Control = Panel2
-    Left = 101
-    Height = 113
-    Top = 82
-    Width = 719
+    Left = 130
+    Height = 149
+    Top = 101
+    Width = 895
     Anchors = [akTop, akLeft, akRight, akBottom]
-    BorderSpacing.Bottom = 6
+    BorderSpacing.Bottom = 8
     TabOrder = 3
   end
 end
