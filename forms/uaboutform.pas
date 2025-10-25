@@ -16,7 +16,7 @@ const
 
   MAIN_CAPTION = 'DKDatabaseScheme v1.1';
 
-  PROJECT_NOTE = 'Схемы баз данных для SQLite3';
+  PROJECT_NOTE = 'Редактор схем баз данных для SQLite3';
   PROJECT_URL  = 'www.github.com/DmitriyKornilov/DKDatabaseScheme';
 
   AUTOR_NAME   = 'Дмитрий Корнилов';

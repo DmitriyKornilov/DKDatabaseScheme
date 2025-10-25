@@ -12,6 +12,7 @@ object AboutForm: TAboutForm
   Constraints.MinWidth = 750
   DesignTimePPI = 120
   Position = poScreenCenter
+  LCLVersion = '4.2.0.0'
   OnShow = FormShow
   object LazarusImage: TImage
     AnchorSideLeft.Control = Owner
