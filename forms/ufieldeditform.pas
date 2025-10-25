@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
   Buttons, DateUtils,
   //DK packages utils
-  DK_Vector, DK_StrUtils, DK_Dialogs,
+  DK_Vector, DK_StrUtils, DK_Dialogs, DK_CtrlUtils,
   //Project utils
   UTypes, UScheme;
 
@@ -80,7 +80,6 @@ var
 
 implementation
 
-
 {$R *.lfm}
 
 { TFieldEditForm }
@@ -89,6 +88,8 @@ procedure TFieldEditForm.FormShow(Sender: TObject);
 var
   Ref: TReferenceTo;
 begin
+  SetControlSize([SaveButton, CancelButton], 140, 40);
+
   TableListSet;
   ActionListSet;
 
@@ -101,14 +102,12 @@ begin
     NotNullCheckBox.Checked:= BaseScheme.ActiveField.NotNull;
 
     case BaseScheme.ActiveField.FieldType of
-    'INTEGER' : RadioButton1.Checked:= True;
-    'DATETIME': RadioButton2.Checked:= True;
-    'TEXT'    : RadioButton3.Checked:= True;
-    'REAL'    : RadioButton4.Checked:= True;
-    'BLOB'    : RadioButton5.Checked:= True;
+      'INTEGER' : RadioButton1.Checked:= True;
+      'DATETIME': RadioButton2.Checked:= True;
+      'TEXT'    : RadioButton3.Checked:= True;
+      'REAL'    : RadioButton4.Checked:= True;
+      'BLOB'    : RadioButton5.Checked:= True;
     end;
-
-
 
     DefaultValueCheckBox.Checked:= BaseScheme.ActiveField.DefaultValue<>EmptyStr;
     SetDefaultValueControls;

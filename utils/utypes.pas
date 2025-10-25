@@ -348,7 +348,8 @@ begin
   case AFieldType of
     'INTEGER' : Result:= TryStrToInt64(AFieldValue, i);
     'DATETIME': if AFieldValue<>'0' then
-                    Result:= TryISO8601ToDate(AFieldValue, d);
+                  Result:= TryStrToDateTime(AFieldValue, d);
+                //  Result:= TryISO8601ToDate(AFieldValue, d);
     'REAL'    : Result:= TryStrToFloat(AFieldValue, f);
     //'TEXT'  not need
     //'BLOB'  not need
@@ -374,13 +375,11 @@ begin
     'DATETIME': if SameStr(AFieldValue, '0') then
                   Result:= '0'
                 else
-                  Result:= FloatToStr(DateTimeToJulianDate(ISO8601ToDate(AFieldValue)));
+                  Result:= FloatToStr(DateTimeToJulianDate(StrToDateTime(AFieldValue)));
+                  //формат ISO8601:    [YYYY]-[MM]-[DD]T[HH]:[NN]:[SS].[ZZZ]
+                  //Result:= FloatToStr(DateTimeToJulianDate(ISO8601ToDate(AFieldValue)));
 
-    'TEXT'    : if SameStr(AFieldValue, 'EmptyStr') then
-                  Result:= QuotedStr(EmptyStr)
-                else
-                  Result:= QuotedStr(AFieldValue);
-
+    'TEXT'    : Result:= QuotedStr(AFieldValue);
     'REAL'    : Result:= AFieldValue;
     //'BLOB'  not need
   end;

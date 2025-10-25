@@ -9,6 +9,7 @@
 *.dbg
 *.ppu
 *.o
+*.obj
 *.or
 *.a
 
@@ -29,6 +30,12 @@ lib/
 # Application specific
 work/
 *.db
+*.db-shm
+*.db-wal
+*.trc
 
 # Application bundle for Mac OS
 *.app/
+
+# Docs
+#*.docx

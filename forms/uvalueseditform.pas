@@ -6,9 +6,9 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
-  Grids, StdCtrls, VirtualTrees, DateUtils,
+  VirtualTrees, DateUtils,
   //DK packages utils
-  DK_Vector, DK_Dialogs, DK_StrUtils, DK_VSTEdit, DK_VSTTypes,
+  DK_Vector, DK_Dialogs, DK_StrUtils, DK_VSTEdit, DK_VSTTypes, DK_CtrlUtils,
   //Project utils
   UTypes, UScheme;
 
@@ -20,28 +20,27 @@ type
     AddButton: TSpeedButton;
     CancelButton: TSpeedButton;
     DelButton: TSpeedButton;
-    Label1: TLabel;
     Panel1: TPanel;
     Panel2: TPanel;
     SaveButton: TSpeedButton;
-    ValuesGrid: TStringGrid;
     VT1: TVirtualStringTree;
     procedure AddButtonClick(Sender: TObject);
     procedure CancelButtonClick(Sender: TObject);
     procedure DelButtonClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure SaveButtonClick(Sender: TObject);
-    procedure ValuesGridBeforeSelection(Sender: TObject; aCol, aRow: Integer);
   private
-    BaseScheme: TBaseScheme;
-    ValuesEdit: TVSTEdit;
-    procedure SetDelButtonEnabled;
-    procedure SetRowNumbers;
+    VSTValues: TVSTEdit;
 
-    procedure ValueSelect;
+    procedure ValuesCreate;
+    procedure ValuesLoad;
+    procedure ValuesSelect;
+
+    procedure SetRowNumbers;
   public
-    procedure BaseSchemeSet(const ABaseScheme: TBaseScheme);
+    BaseScheme: TBaseScheme;
   end;
 
 var
@@ -53,86 +52,22 @@ implementation
 
 { TValuesEditForm }
 
-procedure TValuesEditForm.FormShow(Sender: TObject);
-var
-  i: Integer;
-  Tbl: TTable;
-  ColType: TVSTColumnType;
-
-  Cln: TGridColumn;
-
-  procedure AddColumn(const ACaption: String;      //to delete
-                      const AValues: TStrVector;
-                      const AWidth: Integer = 0);
-  var
-    k: Integer;
-  begin
-    Cln:= ValuesGrid.Columns.Add;
-    Cln.Alignment:= taCenter;
-    Cln.Title.Alignment:= taCenter;
-    Cln.Title.Caption:= ACaption;
-    if AWidth>0 then Cln.Width:= AWidth;
-    for k:= 0 to High(AValues) do
-      ValuesGrid.Cells[Cln.Index, k+1]:= AValues[k];
-  end;
-
+procedure TValuesEditForm.FormCreate(Sender: TObject);
 begin
-  Tbl:= BaseScheme.ActiveTable;
-
-  ValuesGrid.RowCount:= Length(Tbl.Fields[0].ExistingValues) + 1;   //to delete
-  ValuesGrid.FixedRows:= 1;                                         //to delete
-  AddColumn('№', nil, 50);                                          //to delete
-  for i:= 0 to High(Tbl.Fields) do                                  //to delete
-    AddColumn(Tbl.Fields[i].FieldName, Tbl.Fields[i].ExistingValues);
-
-
-
-  ValuesEdit:= TVSTEdit.Create(VT1);
-  ValuesEdit.AutosizeColumnDisable;
-  //ValuesEdit.SelectedBGColor:= clMoneyGreen;
-  ValuesEdit.IsShowZeros:= True;
-  //ValuesEdit.CanUnselect:= False;
-  //ValuesEdit.IsBeginEditOnKeyPress:= False;
-  ValuesEdit.OnSelect:= @ValueSelect;
-  //ValuesEdit.OnEdititingBegin:= @EditingBegin;
-  //if Assigned(AFont) then ValuesEdit.SetSingleFont(AFont);
-  ValuesEdit.AddColumnRowTitles('№ п/п', 50);
-  for i:= 0 to High(Tbl.Fields) do
-  begin
-    ColType:= FieldTypeToColumnType(Tbl.Fields[i].FieldType);
-    if ColType=ctUndefined then continue;
-    if ColType=ctInteger then
-    begin
-      ValuesEdit.AddColumnInteger(Tbl.Fields[i].FieldName, 200);
-      ValuesEdit.SetColumnInteger(Tbl.Fields[i].FieldName, VStrToInt(Tbl.Fields[i].ExistingValues));
-    end
-    else if ColType=ctDateTime then
-    begin
-      ValuesEdit.AddColumnDateTime(Tbl.Fields[i].FieldName, 'dd.mm.yyyy hh:mm:ss', 200);
-      ValuesEdit.SetColumnDateTime(Tbl.Fields[i].FieldName, VStrToDateTime(Tbl.Fields[i].ExistingValues));
-    end
-    else if ColType=ctString then
-    begin
-      ValuesEdit.AddColumnString(Tbl.Fields[i].FieldName, 200);
-      ValuesEdit.SetColumnString(Tbl.Fields[i].FieldName, Tbl.Fields[i].ExistingValues);
-    end
-    else if ColType=ctDouble then
-    begin
-      ValuesEdit.AddColumnDouble(Tbl.Fields[i].FieldName, 200);
-      ValuesEdit.SetColumnDouble(Tbl.Fields[i].FieldName, VStrToFloat(Tbl.Fields[i].ExistingValues));
-    end;
-  end;
-  SetRowNumbers;
-  ValuesEdit.Draw;
-
-  SetDelButtonEnabled;
+  ValuesCreate;
 end;
 
 procedure TValuesEditForm.FormDestroy(Sender: TObject);
 begin
-  //if FEdit.IsEditing then
-  //  ActionCancel(nil);
-  FreeAndNil(ValuesEdit);
+  FreeAndNil(VSTValues);
+end;
+
+procedure TValuesEditForm.FormShow(Sender: TObject);
+begin
+  SetControlSize([SaveButton, CancelButton], 140, 40);
+  SetControlSize([AddButton, DelButton], 36, 36);
+
+  ValuesLoad;
 end;
 
 procedure TValuesEditForm.CancelButtonClick(Sender: TObject);
@@ -144,109 +79,112 @@ procedure TValuesEditForm.SaveButtonClick(Sender: TObject);
 var
   i, j: Integer;
   Tbl: TTable;
-
-  function CheckValues: Boolean;
-  var
-    R,C: Integer;
-    RowNum, FldName, FldType, Value: String;
-  begin
-    Result:= False;
-    for C:= 1 to ValuesGrid.ColCount-1 do
-    begin
-      FldName:= Tbl.Fields[C-1].FieldName;
-      FldType:= Tbl.Fields[C-1].FieldType;
-      for R:= 1 to ValuesGrid.RowCount-1 do
-      begin
-        RowNum:= IntToStr(R);
-        if FldType='BLOB' then
-          Value:= EmptyStr
-        else if Tbl.Fields[C-1].NotNull and
-                (FldType<>'TEXT')  then
-        begin
-          Value:= ValuesGrid.Cells[C,R];
-          if (Value=EmptyStr) and SEmpty(Tbl.Fields[C-1].DefaultValue) then
-          begin
-            Inform('Не указано значение №' + RowNum + ' для поля "' + FldName + '"!');
-            Exit;
-          end;
-          if SEmpty(Tbl.Fields[C-1].DefaultValue) and (not FieldValueCheck(Value, FldType)) then
-          begin
-            Inform('Некорректное значение №' +
-                      RowNum + ' для поля "' + FldName  + '" (' + FldType + ')!');
-            Exit;
-          end;
-          ValuesGrid.Cells[C,R]:= Value;
-        end;
-      end;
-    end;
-    Result:= True;
-  end;
-
+  ColType: TVSTColumnType;
+  V: TStrVector;
 begin
   Tbl:= BaseScheme.ActiveTable;
 
-  if not CheckValues then Exit;
-
-  for i:= 1 to ValuesGrid.ColCount-1 do
+  VSTValues.EndEdit(True{save});
+  for i:= 0 to High(Tbl.Fields) do
   begin
-    Tbl.Fields[i-1].ExistingValues:= nil;
-    for j:= 1 to ValuesGrid.RowCount-1 do
-      VAppend(Tbl.Fields[i-1].ExistingValues, ValuesGrid.Cells[i,j]);
+    ColType:= FieldTypeToColumnType(Tbl.Fields[i].FieldType);
+    if ColType=ctUndefined then continue; //skip blob
+    VSTValues.ColumnAsString(V, Tbl.Fields[i].FieldName);
+    if ColType<>ctString then
+      for j:= 0 to High(V) do
+        if SEmpty(V[j]) then
+        begin
+          VSTValues.Select(j, Tbl.Fields[i].FieldName);
+          Inform('Не указано значение №' + IntToStr(j+1) +
+                 ' для поля "' + Tbl.Fields[i].FieldName + '"!');
+          Exit;
+        end;
+    Tbl.Fields[i].ExistingValues:= V
   end;
 
   ModalResult:= mrOK;
 end;
 
-procedure TValuesEditForm.ValuesGridBeforeSelection(Sender: TObject; aCol, aRow: Integer);  //to delete
-begin
-  if ACol=0 then
-    ValuesGrid.Options:= ValuesGrid.Options - [goEditing]
-  else
-    ValuesGrid.Options:= ValuesGrid.Options + [goEditing];
-end;
-
 procedure TValuesEditForm.DelButtonClick(Sender: TObject);
 begin
-  ValuesGrid.DeleteRow(ValuesGrid.Row); //to delete
-
-  ValuesEdit.RowDelete(ValuesEdit.SelectedRowIndex);
+  VSTValues.EndEdit(False{no save});
+  VSTValues.RowDelete(VSTValues.SelectedRowIndex);
   SetRowNumbers;
-  SetDelButtonEnabled;
 end;
 
 procedure TValuesEditForm.AddButtonClick(Sender: TObject);
+var
+  i: Integer;
+  Tbl: TTable;
+  V: TStrVector;
 begin
-  ValuesGrid.RowCount:= ValuesGrid.RowCount+1; //to delete
-
-  ValuesEdit.RowAppend;
-  SetRowNumbers;
-  SetDelButtonEnabled;
-end;
-
-procedure TValuesEditForm.SetDelButtonEnabled;
-begin
-  //DelButton.Enabled:= ValuesGrid.RowCount>1; //to delete
-  DelButton.Enabled:= Assigned(ValuesEdit) and ValuesEdit.IsSelected;// and (ValuesEdit.RowCount>0);
+  Tbl:= BaseScheme.ActiveTable;
+  VDim(V{%H-}, Length(Tbl.Fields) + 1, EmptyStr);
+  //row order number
+  V[0]:= IntToStr(VSTValues.RowCount + 1);
+  //default values
+  for i:= 0 to High(Tbl.Fields) do
+    if not SEmpty(Tbl.Fields[i].DefaultValue) then
+      V[i+1{skip order col}]:= Tbl.Fields[i].DefaultValue;
+  VSTValues.RowAppend(V);
 end;
 
 procedure TValuesEditForm.SetRowNumbers;
+begin
+  VSTValues.SetColumnRowTitles(VOrderStr(VSTValues.RowCount));
+end;
+
+procedure TValuesEditForm.ValuesCreate;
+begin
+  VSTValues:= TVSTEdit.Create(VT1);
+  VSTValues.AutosizeColumnDisable;
+  VSTValues.IsShowZeros:= True;
+  VSTValues.OnSelect:= @ValuesSelect;
+  VSTValues.HeaderBGColor:= clBtnFace;
+  VSTValues.ColumnRowTitlesBGColor:= clBtnFace;
+end;
+
+procedure TValuesEditForm.ValuesLoad;
 var
   i: Integer;
+  Tbl: TTable;
+  ColType: TVSTColumnType;
 begin
-  for i:= 1 to ValuesGrid.RowCount-1 do    //to delete
-    ValuesGrid.Cells[0, i]:= IntToStr(i);
+  Tbl:= BaseScheme.ActiveTable;
 
-  ValuesEdit.SetColumnRowTitles(VOrderStr(ValuesEdit.RowCount));
+  VSTValues.AddColumnRowTitles('№ п/п', 50);
+  for i:= 0 to High(Tbl.Fields) do
+  begin
+    ColType:= FieldTypeToColumnType(Tbl.Fields[i].FieldType);
+    if ColType=ctUndefined then continue; //skip blob
+    if ColType=ctInteger then
+    begin
+      VSTValues.AddColumnInteger(Tbl.Fields[i].FieldName, 200);
+      VSTValues.SetColumnInteger(Tbl.Fields[i].FieldName, VStrToInt(Tbl.Fields[i].ExistingValues));
+    end
+    else if ColType=ctDateTime then
+    begin
+      VSTValues.AddColumnDateTime(Tbl.Fields[i].FieldName, 'dd.mm.yyyy hh:mm:ss', 200);
+      VSTValues.SetColumnDateTime(Tbl.Fields[i].FieldName, VStrToDateTime(Tbl.Fields[i].ExistingValues));
+    end
+    else if ColType=ctString then
+    begin
+      VSTValues.AddColumnString(Tbl.Fields[i].FieldName, 200);
+      VSTValues.SetColumnString(Tbl.Fields[i].FieldName, Tbl.Fields[i].ExistingValues);
+    end
+    else if ColType=ctDouble then
+    begin
+      VSTValues.AddColumnDouble(Tbl.Fields[i].FieldName, 200);
+      VSTValues.SetColumnDouble(Tbl.Fields[i].FieldName, VStrToFloat(Tbl.Fields[i].ExistingValues));
+    end;
+  end;
+  SetRowNumbers;
+  VSTValues.Draw;
 end;
 
-procedure TValuesEditForm.ValueSelect;
+procedure TValuesEditForm.ValuesSelect;
 begin
-  SetDelButtonEnabled;
-end;
-
-procedure TValuesEditForm.BaseSchemeSet(const ABaseScheme: TBaseScheme);
-begin
-  BaseScheme:= ABaseScheme;
+  DelButton.Enabled:= Assigned(VSTValues) and VSTValues.IsSelected;
 end;
 
 end.

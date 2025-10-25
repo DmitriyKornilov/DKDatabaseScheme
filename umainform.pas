@@ -2,7 +2,7 @@ unit UMainForm;
 
 {$mode objfpc}{$H+}
 
-
+{$DEFINE DEBUG}
 
 interface
 
@@ -11,8 +11,11 @@ uses
   ComCtrls, fpspreadsheetgrid, VirtualTrees, fpstypes, DividerBevel,
   SynEdit, SynHighlighterSQL, Buttons,
   //DK packages utils
-  DK_Vector, DK_LCLStrRus, DK_Dialogs, DK_VSTTableTools, DK_Zoom, DK_Fonts,
-  DK_SheetExporter,
+  {$IFDEF DEBUG}
+  DK_HeapTrace,
+  {$ENDIF}
+  DK_LCLStrRus, DK_Vector, DK_Dialogs, DK_VSTTableTools, DK_Zoom, DK_Fonts,
+  DK_SheetExporter, DK_CtrlUtils,
   //Project utils
   UTypes, UConst, UScheme,
   //Forms
@@ -145,6 +148,10 @@ procedure TMainForm.FormCreate(Sender: TObject);
 var
   AFontPath: String;
 begin
+  {$IFDEF DEBUG}
+  HeapTraceOutputFile('trace.trc');
+  {$ENDIF}
+
   AFontPath:= ExtractFilePath(Application.ExeName) + 'font' + DirectorySeparator;
   LoadExtraFont(AFontPath, SCHEME_FONT_FILENAME);
   SQLSynEdit.Font.Name:= SCHEME_FONT_NAME_DEFAULT;
@@ -171,6 +178,21 @@ begin
 
   AFontPath:= ExtractFilePath(Application.ExeName) + 'font' + DirectorySeparator;
   UnloadExtraFont(AFontPath, SCHEME_FONT_FILENAME);
+end;
+
+procedure TMainForm.FormShow(Sender: TObject);
+begin
+  SQLSynEdit.Height:= (MainPanel.Height - Splitter1.Height) div 3;
+  SetControlHeight([ToolPanel], 40);
+  SetControlWidth([
+    BaseNewButton, BaseOpenButton, BaseSaveButton, BaseSaveAsButton,
+    ExportSpreadsheetButton, ExportSQLScriptButton,
+    TableAddButton, TableEditButton, TableDeleteButton,
+    FieldAddButton, FieldEditButton, FieldDeleteButton,
+    FieldDownButton, FieldUpButton, FieldValuesButton,
+    IndexAddButton, IndexEditButton, IndexDeleteButton
+  ], 36);
+  SchemeGrid.SetFocus;
 end;
 
 procedure TMainForm.TableAddButtonClick(Sender: TObject);
@@ -292,18 +314,9 @@ begin
 end;
 
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-var
-  Answer: Boolean;
 begin
+  BaseClose;
   CanClose:= True;
-  if not IsSchemeChanged then Exit;
-  Answer:= Confirm('В схеме ' + Statusbar1.Panels[1].Text +
-                   ' есть несохраненные изменения! Сохранить?');
-
-  if not Answer then
-    CanClose:= False
-  else
-    BaseWrite;
 end;
 
 procedure TMainForm.BaseClose;
@@ -311,12 +324,6 @@ begin
   if not IsSchemeChanged then Exit;
   if Confirm('В схеме ' + Statusbar1.Panels[1].Text +
              ' есть несохраненные изменения! Сохранить?') then BaseWrite;
-end;
-
-procedure TMainForm.FormShow(Sender: TObject);
-begin
-  SQLSynEdit.Height:= (MainPanel.Height - Splitter1.Height) div 3;
-  SchemeGrid.SetFocus;
 end;
 
 procedure TMainForm.IndexAddButtonClick(Sender: TObject);
@@ -611,7 +618,7 @@ var
 begin
   ValuesEditForm:= TValuesEditForm.Create(MainForm);
   try
-    ValuesEditForm.BaseSchemeSet(BaseScheme);
+    ValuesEditForm.BaseScheme:= BaseScheme;
     if ValuesEditForm.ShowModal=mrOK then
     begin
       SchemeDraw(ZoomPercent);

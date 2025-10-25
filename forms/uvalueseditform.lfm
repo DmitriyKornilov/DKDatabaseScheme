@@ -7,6 +7,7 @@ object ValuesEditForm: TValuesEditForm
   ClientWidth = 1188
   DesignTimePPI = 120
   Position = poScreenCenter
+  OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
   object Panel1: TPanel
@@ -48,6 +49,7 @@ object ValuesEditForm: TValuesEditForm
       Hint = 'Удалить строку'
       Top = 0
       Width = 36
+      Enabled = False
       Flat = True
       Images = MainForm.ImageList1
       ImageIndex = 16
@@ -109,42 +111,11 @@ object ValuesEditForm: TValuesEditForm
       Spacing = 5
       OnClick = SaveButtonClick
     end
-    object Label1: TLabel
-      AnchorSideLeft.Control = Panel2
-      AnchorSideTop.Control = CancelButton
-      AnchorSideTop.Side = asrCenter
-      Left = 12
-      Height = 20
-      Top = 18
-      Width = 710
-      BorderSpacing.Left = 12
-      Caption = '*DATETIME указывать в формате ISO8601:    [YYYY]-[MM]-[DD]T[HH]:[NN]:[SS].[ZZZ]         (или ставить 0)'
-      ParentColor = False
-    end
-  end
-  object ValuesGrid: TStringGrid
-    Left = 15
-    Height = 94
-    Top = 42
-    Width = 1158
-    Align = alTop
-    BorderSpacing.Left = 15
-    BorderSpacing.Right = 15
-    BorderSpacing.Bottom = 8
-    ColCount = 0
-    DefaultColWidth = 180
-    FixedCols = 0
-    FixedRows = 0
-    Flat = True
-    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goEditing, goRowSelect, goSmoothScroll]
-    RowCount = 0
-    TabOrder = 2
-    OnBeforeSelection = ValuesGridBeforeSelection
   end
   object VT1: TVirtualStringTree
     Left = 15
-    Height = 175
-    Top = 144
+    Height = 277
+    Top = 42
     Width = 1158
     Align = alClient
     BorderSpacing.Left = 15
@@ -153,6 +124,6 @@ object ValuesEditForm: TValuesEditForm
     Header.AutoSizeIndex = 0
     Header.Columns = <>
     Header.MainColumn = -1
-    TabOrder = 3
+    TabOrder = 2
   end
 end

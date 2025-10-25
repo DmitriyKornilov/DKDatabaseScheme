@@ -550,9 +550,10 @@ const
       for n:= 0 to High(FTables[ATableIndex].Fields) do
       begin
         Fld:= FTables[ATableIndex].Fields[n];
-        StrValue:= Fld.ExistingValues[k];
-        if SEmpty(StrValue) then continue;
-        StrValue:= FieldValueToSQLString(StrValue, Fld.FieldType);
+
+        if VIsNil(Fld.ExistingValues) then continue;
+
+        StrValue:= FieldValueToSQLString(Fld.ExistingValues[k], Fld.FieldType);
         //список полей
         if SEmpty(StrFields) then
           StrFields:= Fld.FieldName

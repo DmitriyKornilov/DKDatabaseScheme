@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, CheckLst,
   ExtCtrls, Buttons,
   //DK packages utils
-  DK_Dialogs, DK_Vector, DK_StrUtils,
+  DK_Dialogs, DK_Vector, DK_StrUtils, DK_CtrlUtils,
   //Project utils
   UTypes, UScheme;
 
@@ -31,7 +31,7 @@ type
     Label4: TLabel;
     procedure CancelButtonClick(Sender: TObject);
     procedure FieldCheckListBoxClickCheck(Sender: TObject);
-    procedure FieldCheckListBoxSelectionChange(Sender: TObject; User: boolean);
+    procedure FieldCheckListBoxSelectionChange(Sender: TObject; {%H-}User: boolean);
     procedure FieldDownButtonClick(Sender: TObject);
     procedure FieldUpButtonClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -59,6 +59,9 @@ implementation
 
 procedure TIndexEditForm.FormShow(Sender: TObject);
 begin
+  SetControlSize([SaveButton, CancelButton], 140, 40);
+  SetControlSize([FieldDownButton, FieldUpButton], 36, 36);
+
   SelectedIndex:= -1;
   FieldListSet;
 end;

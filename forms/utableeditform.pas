@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
   Buttons, fpspreadsheetgrid,
   //DK packages utils
-  DK_Vector, DK_StrUtils, DK_Dialogs,
+  DK_Vector, DK_StrUtils, DK_Dialogs, DK_CtrlUtils,
   //Project utils
   UTypes, UScheme;
 
@@ -47,6 +47,8 @@ implementation
 
 procedure TTableEditForm.FormShow(Sender: TObject);
 begin
+  SetControlSize([SaveButton, CancelButton], 140, 40);
+
   if EditMode=2 {edit} then
   begin
     TableNameEdit.Text:= BaseScheme.ActiveTable.TableName;

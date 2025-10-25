@@ -264,14 +264,22 @@ begin
   //7-й столбец (DefaultValue)
   FWriter.SetAlignment(haLeft, vaCenter);
   SetFont(FIELD_DEFVALUE_FONT_SIZE, FIELD_DEFVALUE_FONT_STYLE);
-  S:= EmptyStr;
-  if FTable.Fields[AIndex].DefaultValue<>EmptyStr then
-    S:= 'Def=' + FTable.Fields[AIndex].DefaultValue;
-  //else if FTable.Fields[AIndex].FieldType='TEXT' then
-  //  S:= 'Def=' + QuotedStr(S);
-
+  S:= FTable.Fields[AIndex].DefaultValue;
+  if not SEmpty(S) then
+  begin
+    if FTable.Fields[AIndex].FieldType='TEXT' then
+    begin
+      if SSame(FTable.Fields[AIndex].DefaultValue, 'EmptyStr') then
+        S:= 'Def=' + QuotedStr(EmptyStr)
+      else
+        S:= 'Def=' + QuotedStr(S);
+    end
+    else
+      S:= 'Def=' + S
+  end;
   FWriter.WriteText(R1, 7, S, cbtNone, True, True);
   DrawEmptyCells(R1, R2, 7);
+
   //8-й столбец (Стрелки ссылок)
   FWriter.SetAlignment(haCenter, vaCenter);
   SetFont(FIELD_SYMBOLS_FONT_SIZE, []{FIELD_SYMBOLS_FONT_STYLE});
