@@ -14,12 +14,12 @@ uses
   {$IFDEF DEBUG}
   DK_HeapTrace,
   {$ENDIF}
-  DK_LCLStrRus, DK_Vector, DK_Dialogs, DK_VSTTableTools, DK_Zoom, DK_Fonts,
+  DK_LCLStrRus, DK_Vector, DK_VSTTableTools, DK_Zoom, DK_Fonts, DK_MsgDialogs,
   DK_SheetExporter, DK_CtrlUtils,
   //Project utils
   UTypes, UConst, UScheme,
   //Forms
-  UTableEditForm, UFieldEditForm, UValuesEditForm, UIndexEditForm;
+  UTableEditForm, UFieldEditForm, UValuesEditForm, UIndexEditForm, UAboutForm;
 
 type
 
@@ -27,6 +27,7 @@ type
 
   TMainForm = class(TForm)
     BaseNewButton: TSpeedButton;
+    AboutButton: TSpeedButton;
     BaseOpenButton: TSpeedButton;
     BaseSaveAsButton: TSpeedButton;
     BaseSaveButton: TSpeedButton;
@@ -69,6 +70,7 @@ type
     VT1: TVirtualStringTree;
     ZoomPanel: TPanel;
 
+    procedure AboutButtonClick(Sender: TObject);
     procedure BaseNewButtonClick(Sender: TObject);
     procedure CheckBox1Change(Sender: TObject);
     procedure CheckBox2Change(Sender: TObject);
@@ -190,7 +192,8 @@ begin
     TableAddButton, TableEditButton, TableDeleteButton,
     FieldAddButton, FieldEditButton, FieldDeleteButton,
     FieldDownButton, FieldUpButton, FieldValuesButton,
-    IndexAddButton, IndexEditButton, IndexDeleteButton
+    IndexAddButton, IndexEditButton, IndexDeleteButton,
+    AboutButton
   ], 36);
   SchemeGrid.SetFocus;
 end;
@@ -222,6 +225,11 @@ procedure TMainForm.BaseNewButtonClick(Sender: TObject);
 begin
   BaseClose;
   BaseNew;
+end;
+
+procedure TMainForm.AboutButtonClick(Sender: TObject);
+begin
+  FormModalShow(TAboutForm);
 end;
 
 procedure TMainForm.CheckBox1Change(Sender: TObject);
@@ -322,7 +330,7 @@ end;
 procedure TMainForm.BaseClose;
 begin
   if not IsSchemeChanged then Exit;
-  if Confirm('В схеме ' + Statusbar1.Panels[1].Text +
+  if MsgConfirm('В схеме ' + Statusbar1.Panels[1].Text +
              ' есть несохраненные изменения! Сохранить?') then BaseWrite;
 end;
 
@@ -549,7 +557,7 @@ end;
 
 procedure TMainForm.TableDelete;
 begin
-  if not Confirm('Удалить таблицу "' +
+  if not MsgConfirm('Удалить таблицу "' +
                  BaseScheme.ActiveTable.TableName +
                  '"?') then Exit;
 
@@ -577,7 +585,7 @@ end;
 
 procedure TMainForm.FieldDelete;
 begin
-  if not Confirm('Удалить поле "' +
+  if not MsgConfirm('Удалить поле "' +
                  BaseScheme.ActiveField.FieldName +
                  '"?') then Exit;
   BaseScheme.FieldDel;
@@ -604,7 +612,7 @@ end;
 
 procedure TMainForm.IndexDelete;
 begin
-  if not Confirm('Удалить индекс "' +
+  if not MsgConfirm('Удалить индекс "' +
                  BaseScheme.ActiveIndex.IndexName +
                  '"?') then Exit;
   BaseScheme.IndexDel;

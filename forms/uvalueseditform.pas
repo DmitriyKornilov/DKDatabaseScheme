@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
   VirtualTrees, DateUtils,
   //DK packages utils
-  DK_Vector, DK_Dialogs, DK_StrUtils, DK_VSTEdit, DK_VSTTypes, DK_CtrlUtils,
+  DK_Vector, DK_StrUtils, DK_VSTEdit, DK_VSTTypes, DK_CtrlUtils, DK_MsgDialogs,
   //Project utils
   UTypes, UScheme;
 
@@ -95,7 +95,7 @@ begin
         if SEmpty(V[j]) then
         begin
           VSTValues.Select(j, Tbl.Fields[i].FieldName);
-          Inform('Не указано значение №' + IntToStr(j+1) +
+          MsgInform('Не указано значение №' + IntToStr(j+1) +
                  ' для поля "' + Tbl.Fields[i].FieldName + '"!');
           Exit;
         end;

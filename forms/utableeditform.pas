@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
   Buttons, fpspreadsheetgrid,
   //DK packages utils
-  DK_Vector, DK_StrUtils, DK_Dialogs, DK_CtrlUtils,
+  DK_Vector, DK_StrUtils, DK_CtrlUtils, DK_MsgDialogs,
   //Project utils
   UTypes, UScheme;
 
@@ -78,7 +78,7 @@ begin
   S:= STrim(TableNameEdit.Text);
   if S=EmptyStr then
   begin
-    Inform('Не указано наименование таблицы!');
+    MsgInform('Не указано наименование таблицы!');
     Exit;
   end;
 
@@ -98,7 +98,7 @@ begin
       BaseScheme.TableSet(TmpTable);
     ModalResult:= mrOK;
   except
-    on E: EDuplicateException do Inform(E.Message);
+    on E: EDuplicateException do MsgInform(E.Message);
   end;
 end;
 

@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, CheckLst,
   ExtCtrls, Buttons,
   //DK packages utils
-  DK_Dialogs, DK_Vector, DK_StrUtils, DK_CtrlUtils,
+  DK_Vector, DK_StrUtils, DK_CtrlUtils, DK_MsgDialogs,
   //Project utils
   UTypes, UScheme;
 
@@ -119,13 +119,13 @@ begin
   S:= STrim(IndexNameEdit.Text);
   if S=EmptyStr then
   begin
-    Inform('Не указано наименование индекса!');
+    MsgInform('Не указано наименование индекса!');
     Exit;
   end;
 
   if not VIsTrue(FieldFlags) then
   begin
-    Inform('Не указано ни одного поля для индекса!');
+    MsgInform('Не указано ни одного поля для индекса!');
     Exit;
   end;
 
@@ -143,7 +143,7 @@ begin
       BaseScheme.IndexSet(TmpIndex);
     ModalResult:= mrOK;
   except
-    on E: EDuplicateException do Inform(E.Message);
+    on E: EDuplicateException do MsgInform(E.Message);
   end;
 end;
 

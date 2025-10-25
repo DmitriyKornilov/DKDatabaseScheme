@@ -7,6 +7,7 @@ object ValuesEditForm: TValuesEditForm
   ClientWidth = 1188
   DesignTimePPI = 120
   Position = poScreenCenter
+  LCLVersion = '4.2.0.0'
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow

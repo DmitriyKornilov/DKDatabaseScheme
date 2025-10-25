@@ -8,6 +8,7 @@ object IndexEditForm: TIndexEditForm
   ClientWidth = 524
   DesignTimePPI = 120
   Position = poScreenCenter
+  LCLVersion = '4.2.0.0'
   OnShow = FormShow
   object Label4: TLabel
     AnchorSideTop.Control = IndexNameEdit

@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
   Buttons, DateUtils,
   //DK packages utils
-  DK_Vector, DK_StrUtils, DK_Dialogs, DK_CtrlUtils,
+  DK_Vector, DK_StrUtils, DK_CtrlUtils, DK_MsgDialogs,
   //Project utils
   UTypes, UScheme;
 
@@ -178,7 +178,7 @@ begin
   S:= STrim(FieldNameEdit.Text);
   if S=EmptyStr then
   begin
-    Inform('Не указано наименование поля!');
+    MsgInform('Не указано наименование поля!');
     Exit;
   end;
 
@@ -186,12 +186,12 @@ begin
   begin
     if RefTableComboBox.Text=EmptyStr then
     begin
-      Inform('Не указана таблица для внешнего ключа!');
+      MsgInform('Не указана таблица для внешнего ключа!');
       Exit;
     end;
     if RefFieldComboBox.Text=EmptyStr then
     begin
-      Inform('Не указано поле для внешнего ключа!');
+      MsgInform('Не указано поле для внешнего ключа!');
       Exit;
     end;
   end;
@@ -238,7 +238,7 @@ begin
     if FieldValueCheck(S, TmpField.FieldType) then
       TmpField.DefaultValue:= S
     else begin
-      Inform('Некорректное значение по умолчанию!');
+      MsgInform('Некорректное значение по умолчанию!');
       Exit;
     end;
   end;
@@ -260,7 +260,7 @@ begin
       BaseScheme.FieldSet(TmpField);
     ModalResult:= mrOK;
   except
-    on E: EDuplicateException do Inform(E.Message);
+    on E: EDuplicateException do MsgInform(E.Message);
   end;
 end;
 
