@@ -7,6 +7,7 @@ object MainForm: TMainForm
   ClientHeight = 588
   ClientWidth = 1250
   DesignTimePPI = 120
+  LCLVersion = '4.2.0.0'
   WindowState = wsMaximized
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
@@ -24,8 +25,8 @@ object MainForm: TMainForm
     BorderSpacing.Bottom = 2
     BevelOuter = bvNone
     BorderStyle = bsSingle
-    ClientHeight = 36
-    ClientWidth = 1242
+    ClientHeight = 40
+    ClientWidth = 1246
     TabOrder = 0
     object CheckBox1: TCheckBox
       AnchorSideLeft.Control = DividerBevel5
@@ -1065,8 +1066,8 @@ object MainForm: TMainForm
       BevelOuter = bvNone
       BorderStyle = bsSingle
       Caption = 'Panel3'
-      ClientHeight = 248
-      ClientWidth = 886
+      ClientHeight = 252
+      ClientWidth = 890
       TabOrder = 2
       object SchemeGrid: TsWorksheetGrid
         Left = 0
@@ -1162,8 +1163,8 @@ object MainForm: TMainForm
     BevelOuter = bvNone
     BorderStyle = bsSingle
     Caption = 'LeftPanel'
-    ClientHeight = 509
-    ClientWidth = 346
+    ClientHeight = 513
+    ClientWidth = 350
     TabOrder = 4
     object VT1: TVirtualStringTree
       Left = 0
